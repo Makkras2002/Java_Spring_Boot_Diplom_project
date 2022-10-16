@@ -1,5 +1,6 @@
 package com.makkras.shop.security.config;
 
+import com.makkras.shop.entity.RoleType;
 import com.makkras.shop.security.CustomUserDetailsService;
 import com.makkras.shop.security.handler.CustomAuthenticationSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.AccessDeniedHandler;
@@ -38,11 +40,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .anonymous().authorities(RoleType.GUEST.getRoleName())
+                .and()
                 .authorizeHttpRequests()
                 .antMatchers("/","/pictures/**","/catalog")
                 .permitAll()
                 .antMatchers("/employeeMain")
                 .hasAuthority("EMPLOYEE")
+                .antMatchers("logout")
+                .hasAnyAuthority("EMPLOYEE","CLIENT")
+                .antMatchers("/register","/regconfirm")
+                .hasAuthority("GUEST")
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -76,8 +84,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     protected PasswordEncoder passwordEncoder() {
-        //return new BCryptPasswordEncoder(12);
-        return NoOpPasswordEncoder.getInstance();
+        return new BCryptPasswordEncoder(12);
+        //return NoOpPasswordEncoder.getInstance();
     }
 
     @Bean

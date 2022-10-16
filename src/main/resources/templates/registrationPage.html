@@ -1,0 +1,45 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Registration</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+</head>
+<body class="p-2 bg-primary text-black bg-opacity-50">
+<div align="center" class="align-top">
+    <div class="col-md-6">
+        <div class="display-3">Регистрация</div>
+    </div>
+</div>
+<div align="center" class="align-middle">
+    <form th:action="@{/register}" method="post">
+        <div class="mb-3 w-25" style="margin-top: 40px">
+            <label for="login" class="form-label" >Введите логин</label>
+            <input type="text" th:value="${formValues?.get('login')}" class="form-control" id="login" name="login" minlength="3" maxlength="100" required="required"/>
+        </div>
+        <div class="mb-3 w-25" style="margin-top: 40px">
+            <label for="email" class="form-label" >Введите email</label>
+            <input type="email" th:value="${formValues?.get('email')}" class="form-control" id="email" name="email" required="required">
+        </div>
+        <div class="mb-3 w-25" style="margin-top: 40px">
+            <label for="password" class="col-form-label">Введите пароль</label>
+        </div>
+        <div class="mb-3 w-25">
+            <input type="password" th:value="${formValues?.get('password')}" id="password" name="password" class="form-control" maxlength="20" minlength="8" aria-describedby="passwordHelpInline" required="required">
+        </div>
+        <div class="col-auto">
+            <span id="passwordHelpInline" class="form-text">
+                Пароль должен быть длиной от 8 до 20 символов
+            </span>
+        </div>
+        <button type="submit" class="btn btn-outline-success btn-lg" style="margin-top: 40px">Зарегистрироваться</button>
+    </form>
+</div>
+<div align="center" class="mt-2">
+    <p style="color: red" th:if="${UserAlreadyExistsError != null}" th:text="${UserAlreadyExistsError}"/>
+    <a th:href="@{/}">Вернуться...</a>
+    <br/>
+</div>
+<footer th:insert="footer.html" ::footer/>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+</body>
+</html>

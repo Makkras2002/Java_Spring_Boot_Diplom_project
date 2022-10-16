@@ -20,7 +20,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userJpaRepository.findByLogin(username)
+        User user = userJpaRepository.findByLoginOrEmailAndIsActive(username,username,true)
                 .orElseThrow(() -> new UsernameNotFoundException("Such user doesn't exist"));
         return SecurityUser.convertFormUserToSecurityUser(user);
     }

@@ -13,7 +13,7 @@ public class User extends CustomEntity {
     private String email;
     private String password;
 
-    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER, targetEntity = UserRole.class)
+    @ManyToOne(fetch = FetchType.EAGER, targetEntity = UserRole.class)
     @JoinColumn(name = "role_id")
     private UserRole role;
 

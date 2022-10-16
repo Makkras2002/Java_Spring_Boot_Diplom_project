@@ -2,15 +2,58 @@
     <a href="/" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
         <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
     </a>
-    <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+    <th:block sec:authorize="isAuthenticated()"><button type="button" class="btn btn-success col-md-1 w-auto mx-0" data-bs-toggle="modal" data-bs-target="#profileModal">
+        <i class="fa fa-home"></i>|
+        Профиль
+    </button>
+        <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="profileModalLabel">Профиль</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table">
+                            <tr>
+                                <td style="color: purple">Имя пользователя</td>
+                                <td th:text="${#authentication.principal.getUsername()}"></td>
+                            </tr>
+                            <tr>
+                                <td style="color: purple">
+                                    Email пользователя
+                                </td>
+                                <td th:text="${#authentication.principal.getEmail()}">
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="color: purple">Роль</td>
+                                <td>
+                                    <p th:each="authority : ${#authentication.getAuthorities()}"
+                                       th:text="${authority.getAuthority()}">
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </th:block>
+
+    <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0 mx-auto">
         <li><a href="/" class="nav-link px-2 link-secondary">Главная</a></li>
         <li><a href="/catalog" class="nav-link px-2 link-dark">Каталог товаров</a></li>
         <li><a href="/blog" class="nav-link px-2 link-dark">FAQs</a></li>
         <li><a href="/aboutUs" class="nav-link px-2 link-dark">Про нас</a></li>
     </ul>
-    <div class="col-md-3 text-end">
-        <a th:href="@{/login}" type="button" class="btn btn-outline-primary me-2">Войти</a>
-        <a th:href="@{/logout}" type="button" class="btn btn-outline-primary me-2">Выйти</a>
-        <button type="button" class="btn btn-primary">Зарегистрироваться</button>
+    <div class="col-md-3 text-end mx-5">
+        <th:block sec:authorize="!isAuthenticated()"><a th:href="@{/login}" type="button" class="btn btn-outline-primary me-2">Войти</a></th:block>
+        <th:block sec:authorize="isAuthenticated()"><a th:href="@{/logout}" type="button" class="btn btn-outline-primary me-2">Выйти</a></th:block>
+        <th:block sec:authorize="!isAuthenticated()"><a th:href="@{/register}" type="button" class="btn btn-info me-2">Зарегистрироваться</a></th:block>
     </div>
 </div>
