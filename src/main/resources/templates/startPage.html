@@ -11,6 +11,12 @@
 <body>
 <header th:insert="header.html :: header"/>
 <div class="px-4 pt-4 my-4 text-center border-bottom">
+    <script th:inline="javascript">
+        let error = [[${error}]];
+        if(error != null) {
+            alert(error)
+        }
+    </script>
     <h1 class="display-4 fw-bold">Мы открылись!!!</h1>
     <div class="col-lg-6 mx-auto">
         <p class="lead mb-4">Магазин продовольственных товаров "BestFood" наконец-то открылся и готова предоставить Вам самую вкусную

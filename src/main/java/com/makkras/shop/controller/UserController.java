@@ -3,6 +3,8 @@ package com.makkras.shop.controller;
 import com.makkras.shop.entity.RoleType;
 import com.makkras.shop.entity.User;
 import com.makkras.shop.entity.UserRole;
+import com.makkras.shop.exception.CustomServiceException;
+import com.makkras.shop.security.SecurityUser;
 import com.makkras.shop.service.MailService;
 import com.makkras.shop.service.UserService;
 import com.makkras.shop.service.impl.CustomMailService;
@@ -22,6 +24,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
@@ -34,6 +37,9 @@ import java.util.Optional;
 public class UserController {
 
     private static final  String USER_ALREADY_REGISTERED_ERROR = "Пользователь с таким логином или почтой уже зарегистрирован!";
+    private static final String INVALID_DATA_ERROR = "Введены недопустимые данные!";
+    private static final String USER_WITH_SUCH_DATA_ALREADY_EXISTS = "Пользователь с такими данными уже существует!";
+    private static final String PASSWORD_REPEATED_INCORRECTLY = "Введённые пароли не совпадают";
     private static final  String URL_TO_CONFIRM_REGISTRATION_BY_EMAIL = "/regconfirm";
     private static final String APP_HOST = "http://localhost:8080";
     private static final String USER_TO_CONFIRM_REG_ATTRIBUTE_NAME = "userAwaitingEmailConfirmationToRegister";
@@ -117,4 +123,71 @@ public class UserController {
         return "loginPage";
     }
 
+    @PostMapping("/changeLogin")
+    public String changeLogin(Model model, @RequestParam String newLogin, Authentication authentication,
+                                    RedirectAttributes redirectAttributes) {
+        SecurityUser securityUser = (SecurityUser) authentication.getPrincipal();
+        if(!userService.checkIfUserWithSuchLoginIsAlreadyPresent(newLogin)) {
+            if(userDataValidator.validateUserChangeLoginData(newLogin)) {
+                try {
+                    userService.updateUserLogin(newLogin,securityUser.getUsername());
+                    securityUser.setUsername(newLogin);
+                } catch (CustomServiceException e) {
+                    logger.error(e.getMessage());
+                    redirectAttributes.addFlashAttribute("error",e.getMessage());
+                }
+            } else {
+                redirectAttributes.addFlashAttribute("error",INVALID_DATA_ERROR);
+            }
+        } else {
+            redirectAttributes.addFlashAttribute("error",USER_ALREADY_REGISTERED_ERROR);
+        }
+        return "redirect:/";
+    }
+
+    @PostMapping("/changeEmail")
+    public String changeEmail(Model model, @RequestParam String newEmail, Authentication authentication,
+                              RedirectAttributes redirectAttributes) {
+        SecurityUser securityUser = (SecurityUser) authentication.getPrincipal();
+        if(!userService.checkIfUserWithSuchEmailIsAlreadyPresent(newEmail)) {
+            if(userDataValidator.validateUserChangeEmailData(newEmail)) {
+                try {
+                    userService.updateUserEmail(newEmail,securityUser.getEmail(),securityUser.getUsername());
+                    securityUser.setEmail(newEmail);
+                } catch (CustomServiceException e) {
+                    logger.error(e.getMessage());
+                    redirectAttributes.addFlashAttribute("error",e.getMessage());
+                }
+            } else {
+                redirectAttributes.addFlashAttribute("error",INVALID_DATA_ERROR);
+            }
+        } else {
+            redirectAttributes.addFlashAttribute("error",USER_ALREADY_REGISTERED_ERROR);
+        }
+        return "redirect:/";
+    }
+
+    @PostMapping("/changePassword")
+    public String changeEmail(Model model,@RequestParam String oldPassword, @RequestParam String newPassword,
+                              @RequestParam String newPasswordRepeated, Authentication authentication,
+                              RedirectAttributes redirectAttributes) {
+        SecurityUser securityUser = (SecurityUser) authentication.getPrincipal();
+        String encodedNewPassword = passwordEncoder.encode(newPassword);
+        if(newPassword.equals(newPasswordRepeated) && passwordEncoder.matches(oldPassword,securityUser.getPassword())) {
+            if(userDataValidator.validateUserChangePasswordData(newPassword)) {
+                try {
+                    userService.updateUserPassword(encodedNewPassword,securityUser.getUsername());
+                    securityUser.setPassword(encodedNewPassword);
+                } catch (CustomServiceException e) {
+                    logger.error(e.getMessage());
+                    redirectAttributes.addFlashAttribute("error",e.getMessage());
+                }
+            } else {
+                redirectAttributes.addFlashAttribute("error",INVALID_DATA_ERROR);
+            }
+        } else {
+            redirectAttributes.addFlashAttribute("error",PASSWORD_REPEATED_INCORRECTLY);
+        }
+        return "redirect:/";
+    }
 }

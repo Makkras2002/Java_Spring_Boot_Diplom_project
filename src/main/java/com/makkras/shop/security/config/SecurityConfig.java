@@ -47,7 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .antMatchers("/employeeMain")
                 .hasAuthority("EMPLOYEE")
-                .antMatchers("logout")
+                .antMatchers("/logout","/changeLogin","/changePassword","/changeEmail")
                 .hasAnyAuthority("EMPLOYEE","CLIENT")
                 .antMatchers("/register","/regconfirm")
                 .hasAuthority("GUEST")

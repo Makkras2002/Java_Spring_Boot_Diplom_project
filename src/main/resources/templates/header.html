@@ -6,6 +6,8 @@
         <i class="fa fa-home"></i>|
         Профиль
     </button>
+
+
         <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -18,13 +20,25 @@
                             <tr>
                                 <td style="color: purple">Имя пользователя</td>
                                 <td th:text="${#authentication.principal.getUsername()}"></td>
+                                <td>
+                                    <th:block sec:authorize="isAuthenticated()"><button type="button" class="btn btn-success col-md-1 w-auto mx-0" data-bs-toggle="modal" data-bs-target="#usernameChangeModal">
+                                        <i class="fa fa-pencil"></i>|
+                                        Изменить логин
+                                    </button>
+                                    </th:block>
+                                </td>
                             </tr>
                             <tr>
                                 <td style="color: purple">
                                     Email пользователя
                                 </td>
-                                <td th:text="${#authentication.principal.getEmail()}">
-
+                                <td th:text="${#authentication.principal.getEmail()}"></td>
+                                <td>
+                                    <th:block sec:authorize="isAuthenticated()"><button type="button" class="btn btn-success col-md-1 w-auto mx-0" data-bs-toggle="modal" data-bs-target="#emailChangeModal">
+                                        <i class="fa fa-pencil"></i>|
+                                        Изменить email
+                                    </button>
+                                    </th:block>
                                 </td>
                             </tr>
                             <tr>
@@ -33,6 +47,13 @@
                                     <p th:each="authority : ${#authentication.getAuthorities()}"
                                        th:text="${authority.getAuthority()}">
                                     </p>
+                                </td>
+                                <td>
+                                    <th:block sec:authorize="isAuthenticated()"><button type="button" class="btn btn-success col-md-1 w-auto mx-0" data-bs-toggle="modal" data-bs-target="#passwordChangeModal">
+                                        <i class="fa fa-pencil"></i>|
+                                        Изменить пароль
+                                    </button>
+                                    </th:block>
                                 </td>
                             </tr>
                         </table>
@@ -43,6 +64,13 @@
                 </div>
             </div>
         </div>
+
+        <div th:insert="modals/usernameChangeModal.html" :: div/>
+
+        <div th:insert="modals/emailChangeModal.html" :: div/>
+
+        <div th:insert="modals/passwordChangeModal.html" :: div/>
+
     </th:block>
 
     <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0 mx-auto">

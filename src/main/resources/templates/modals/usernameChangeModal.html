@@ -1,0 +1,20 @@
+<div class="modal fade" id="usernameChangeModal" tabindex="-1" aria-labelledby="usernameChangeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="usernameChangeModalLabel">Измение логина</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form th:action="@{/changeLogin}" method="post" id="changeLoginForm">
+                    <label for="newLogin" class="w-auto mx-auto">Введите Ваш новый логин</label>
+                    <input type="text" id="newLogin" name="newLogin" minlength="3" maxlength="100" required="required" class="form-control w-auto mx-auto" th:value="${#authentication.principal.getUsername()}"/>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" form="changeLoginForm" class="btn btn-outline-primary">Сохранить изменения</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>

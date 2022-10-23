@@ -7,15 +7,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 
 public class SecurityUser implements UserDetails {
-    private final String username;
-    private final String password;
-    private final String email;
-    private final Set<SimpleGrantedAuthority> grantedAuthoritiesList;
-    private final boolean isActive;
+    private String username;
+    private String password;
+    private String email;
+    private Set<SimpleGrantedAuthority> grantedAuthoritiesList;
+    private boolean isActive;
 
     public SecurityUser(String username, String password, String email,
                         Set<SimpleGrantedAuthority> grantedAuthoritiesList, boolean isActive) {
@@ -63,6 +62,26 @@ public class SecurityUser implements UserDetails {
     @Override
     public boolean isEnabled() {
         return isActive;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setGrantedAuthoritiesList(Set<SimpleGrantedAuthority> grantedAuthoritiesList) {
+        this.grantedAuthoritiesList = grantedAuthoritiesList;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 
     public static UserDetails convertFormUserToSecurityUser(User user) {

@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 public class CustomUserDataValidator implements UserDataValidator {
     private static final String EMAIL_REGEX = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
     private static final String INVALID_DATA_ENTERED_ERROR = "Введены неверные данные!";
-    private static final int MIN_LOGIN_LENGTH = 1;
+    private static final int MIN_LOGIN_LENGTH = 3;
     private static final int MAX_LOGIN_LENGTH = 100;
     private static final int MAX_EMAIL_LENGTH = 50;
     private static final int MAX_PASSWORD_LENGTH = 20;
