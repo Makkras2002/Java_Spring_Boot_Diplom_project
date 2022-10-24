@@ -12,4 +12,8 @@ public class StartController {
 
         return "startPage";
     }
+    @GetMapping("/aboutUs")
+    public String showAboutUsPage(Model model) {
+        return "aboutUs";
+    }
 }
