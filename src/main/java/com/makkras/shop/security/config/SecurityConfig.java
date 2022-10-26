@@ -14,7 +14,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -43,7 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anonymous().authorities(RoleType.GUEST.getRoleName())
                 .and()
                 .authorizeHttpRequests()
-                .antMatchers("/","/pictures/**","/catalog","/aboutUs")
+                .antMatchers("/","/pictures/**","/catalog","/aboutUs","/js/**")
                 .permitAll()
                 .antMatchers("/employeeMain")
                 .hasAuthority("EMPLOYEE")

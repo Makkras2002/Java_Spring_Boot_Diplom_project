@@ -23,7 +23,7 @@ public class Product extends CustomEntity {
     private String picturePath;
 
     @Column(name = "product_comment")
-    private String product_comment;
+    private String productComment;
 
     @ManyToOne(cascade = CascadeType.MERGE,fetch = FetchType.EAGER, targetEntity = ProductCategory.class)
     @JoinColumn(name = "product_category_id")
@@ -37,27 +37,27 @@ public class Product extends CustomEntity {
 
     public Product(String productName, BigDecimal productPrice,
                    Long amountInStock, String picturePath,
-                   String product_comment, ProductCategory category,
+                   String productComment, ProductCategory category,
                    boolean isAvailable) {
         this.productName = productName;
         this.productPrice = productPrice;
         this.amountInStock = amountInStock;
         this.picturePath = picturePath;
-        this.product_comment = product_comment;
+        this.productComment = productComment;
         this.category = category;
         this.isAvailable = isAvailable;
     }
 
     public Product(Long productId, String productName,
                    BigDecimal productPrice, Long amountInStock,
-                   String picturePath, String product_comment,
+                   String picturePath, String productComment,
                    ProductCategory category, boolean isAvailable) {
         this.productId = productId;
         this.productName = productName;
         this.productPrice = productPrice;
         this.amountInStock = amountInStock;
         this.picturePath = picturePath;
-        this.product_comment = product_comment;
+        this.productComment = productComment;
         this.category = category;
         this.isAvailable = isAvailable;
     }
@@ -102,12 +102,12 @@ public class Product extends CustomEntity {
         this.picturePath = picturePath;
     }
 
-    public String getProduct_comment() {
-        return product_comment;
+    public String getProductComment() {
+        return productComment;
     }
 
-    public void setProduct_comment(String product_comment) {
-        this.product_comment = product_comment;
+    public void setProductComment(String product_comment) {
+        this.productComment = product_comment;
     }
 
     public ProductCategory getCategory() {
@@ -141,7 +141,7 @@ public class Product extends CustomEntity {
         if (amountInStock != null ? !amountInStock.equals(product.amountInStock) : product.amountInStock != null)
             return false;
         if (picturePath != null ? !picturePath.equals(product.picturePath) : product.picturePath != null) return false;
-        if (product_comment != null ? !product_comment.equals(product.product_comment) : product.product_comment != null)
+        if (productComment != null ? !productComment.equals(product.productComment) : product.productComment != null)
             return false;
         return category != null ? category.equals(product.category) : product.category == null;
     }
@@ -153,7 +153,7 @@ public class Product extends CustomEntity {
         result = 31 * result + (productPrice != null ? productPrice.hashCode() : 0);
         result = 31 * result + (amountInStock != null ? amountInStock.hashCode() : 0);
         result = 31 * result + (picturePath != null ? picturePath.hashCode() : 0);
-        result = 31 * result + (product_comment != null ? product_comment.hashCode() : 0);
+        result = 31 * result + (productComment != null ? productComment.hashCode() : 0);
         result = 31 * result + (category != null ? category.hashCode() : 0);
         result = 31 * result + (isAvailable ? 1 : 0);
         return result;
@@ -167,7 +167,7 @@ public class Product extends CustomEntity {
         sb.append(", productPrice=").append(productPrice);
         sb.append(", amountInStock=").append(amountInStock);
         sb.append(", picturePath='").append(picturePath).append('\'');
-        sb.append(", product_comment='").append(product_comment).append('\'');
+        sb.append(", product_comment='").append(productComment).append('\'');
         sb.append(", category=").append(category);
         sb.append(", isAvailable=").append(isAvailable);
         sb.append('}');

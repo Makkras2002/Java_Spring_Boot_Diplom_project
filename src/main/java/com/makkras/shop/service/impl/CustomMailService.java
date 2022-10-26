@@ -29,6 +29,7 @@ public class CustomMailService implements MailService {
     public CustomMailService(JavaMailSender mailSender) {
         this.mailSender = mailSender;
     }
+
     @Override
     public void sendVerificationEmail(User user, String pageURL)
             throws MessagingException, UnsupportedEncodingException {
