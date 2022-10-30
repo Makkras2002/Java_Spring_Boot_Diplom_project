@@ -11,8 +11,32 @@
 <body>
 <header th:insert="header.html :: header"/>
 <div id="productData" style="display: none" th:text="${productsInStock}"></div>
+<div id="error" style="display: none" th:text="${error}"></div>
 <div id="context" style="display: none" th:text="${#request.getContextPath()}"></div>
-<div class="row mt-5 mx-auto">
+<div class="row mx-auto justify-content-center">
+    <div class="col-4 mx-auto">
+        <button type="button" class="btn btn-warning col-md-1 w-auto mx-auto" data-bs-toggle="modal" data-bs-target="#searchModal">
+            <i class="fa fa-search"></i>|
+            Фильтрация и поиск
+        </button>
+    </div>
+    <div class="col-4 mx-auto">
+        <form th:action="@{/sortCatalog}" method="post" id="sortForm" class="form col-md-1 w-auto">
+            <select class="form-select" id="sortFormSelect" name="sortFormSelect">
+                <option selected="selected" style="color: darkgray" disabled="disabled" value="noneSelected">Выберите способ сортировки...</option>
+                <option style="color: darkorange" value="byPriceAsc">По возрастанию цены</option>
+                <option style="color: darkorange" value="byPriceDesc">По убыванию цены</option>
+                <option style="color: darkorange" value="byName">По названию</option>
+                <option style="color: darkorange" value="byCategory">По категории</option>
+            </select>
+        </form>
+    </div>
+    <div class="col-4 mx-auto">
+        <button class="btn btn-outline-warning col-md-1 w-auto mx-auto" type="submit" form="sortForm">
+            <i class="fa fa-sort"></i>| Сортировка</button>
+    </div>
+</div>
+<div class="row mt-2 mx-auto">
     <table class="table table-primary table-bordered table-hover" >
         <tbody id="productTable">
         </tbody>
@@ -29,6 +53,7 @@
         <button class="btn-warning" id="next" type="button" onclick="nextPage()">Далее</button>
     </div>
 </div>
+<div th:insert="modals/searchAndFilterModal.html" :: div/>
 <footer th:insert="footer.html" :: footer/>
 </body>
 <script type="text/javascript" th:src="@{/js/catalog_page_handler.js}"></script>

@@ -1,0 +1,30 @@
+<div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="searchModalLabel">Фильтрация и поиск</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p style="color: darkorange; font-weight: bolder">Заполните поля необходимые для поиска и фильтрации:</p>
+                <form th:action="@{/search}" method="post" id="searchForm">
+                    <label for="name" class="form-label">Введите название товара</label>
+                    <input class="form-control" type="text" id="name" minlength="3" name="name" placeholder="Название товара"/>
+                    <label for="category" class="form-label">Выберите категорию товара</label>
+                    <select class="form-select" id="category" name="category">
+                        <option selected="selected" disabled="disabled" value="-">-</option>
+                        <option th:each="category : ${categories}" th:text="${category.category}" th:value="${category.category}"></option>
+                    </select>
+                    <label for="minPrice" class="form-label">Введите нижнюю границу цены</label>
+                    <input class="form-control" type="number" min="0" step="0.01" id="minPrice" name="minPrice"/>
+                    <label for="maxPrice" class="form-label">Введите верхнюю границу цены</label>
+                    <input class="form-control" type="number" min="0" step="0.01" id="maxPrice" name="maxPrice"/>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" form="searchForm" class="btn btn-outline-primary">Поиск</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>

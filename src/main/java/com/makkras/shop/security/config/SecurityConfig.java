@@ -42,7 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anonymous().authorities(RoleType.GUEST.getRoleName())
                 .and()
                 .authorizeHttpRequests()
-                .antMatchers("/","/pictures/**","/catalog","/aboutUs","/js/**")
+                .antMatchers("/","/pictures/**","/catalog","/aboutUs","/js/**","/search","/sortCatalog","/favicon.ico")
                 .permitAll()
                 .antMatchers("/employeeMain")
                 .hasAuthority("EMPLOYEE")

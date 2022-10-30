@@ -9,4 +9,8 @@ import java.util.List;
 @Repository
 public interface ProductJpaRepository extends JpaRepository<Product,Long> {
     List<Product> findAllByAmountInStockGreaterThanAndIsAvailable(Long minAmount,boolean availabilityStatus);
+    List<Product> findAllByAmountInStockGreaterThanAndIsAvailableOrderByProductPriceAsc(Long minAmount,boolean availabilityStatus);
+    List<Product> findAllByAmountInStockGreaterThanAndIsAvailableOrderByProductPriceDesc(Long minAmount,boolean availabilityStatus);
+    List<Product> findAllByAmountInStockGreaterThanAndIsAvailableOrderByProductName(Long minAmount,boolean availabilityStatus);
+    List<Product> findAllByAmountInStockGreaterThanAndIsAvailableOrderByCategoryCategory(Long minAmount,boolean availabilityStatus);
 }

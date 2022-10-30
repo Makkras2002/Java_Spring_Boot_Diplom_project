@@ -37,28 +37,28 @@ function changePage(page)
         let tr = "";
         if (i == (page-1) * records_per_page) {
             tr +=
-                "<tr><td>" +
+                "<tr><td style='color: green; font-weight: bolder'>" +
                 "N" +
                 "</td>" +
-                "<td>" +
+                "<td style='color: green; font-weight: bolder'>" +
                 "Название" +
                 "</td>" +
-                "<td>" +
+                "<td style='color: green; font-weight: bolder'>" +
                 "Категория" +
                 "</td>" +
-                "<td>" +
+                "<td style='color: green; font-weight: bolder'>" +
                 "Цена" +
                 "</td>" +
-                "<td>" +
+                "<td style='color: green; font-weight: bolder'>" +
                 "Изображение" +
                 "</td>" +
-                "<td>" +
+                "<td style='color: green; font-weight: bolder'>" +
                 "Комментарий" +
                 "</td>" +
-                "<td>" +
+                "<td style='color: green; font-weight: bolder'>" +
                 "Необходимое количество" +
                 "</td>" +
-                "<td>" +
+                "<td style='color: green; font-weight: bolder'>" +
                 "Имеющееся количество на складе" +
                 "</td>" +
                 "<td>" +
@@ -67,7 +67,7 @@ function changePage(page)
                 "</tr>";
         }
         tr +=
-            "<form id='"+i+"' method='post' th:action='@{/addToBasket}'><input form='"+i+"' type='hidden' name='product_id' id='product_id' required='required' readonly='readonly' value='"+
+            "<form id='"+i+"' method='post' action='"+context+"/addToBasket'><input form='"+i+"' type='hidden' name='product_id' id='product_id' required='required' readonly='readonly' value='"+
             products[i].productId +
             "'/>" + "<input form='"+i+"' type='hidden' name='category_id' id='category_id' required='required' readonly='readonly' value='"+
             products[i].category.categoryId +
@@ -81,7 +81,7 @@ function changePage(page)
             products[i].category.category +
             "</td>" +
             "<td>" +
-            products[i].productPrice +
+            products[i].productPrice +" BYN"+
             "</td>" +
             "<td><img src='" +context+"/"+
             products[i].picturePath+
@@ -92,7 +92,7 @@ function changePage(page)
             "<td><input form='"+i+"' type='number' name='amount'  id='amount' min='1' max='"+products[i].amountInStock+"' step='1' required='required'"+
             "/></td>" +
             "<td>" +
-            products[i].amountInStock+
+            products[i].amountInStock+ " ед."+
             "</td>"+
             "<td>"+
             "<button form='"+i+"' type='submit' class='btn btn-primary'>"+"Добавить в корзину"+
@@ -121,20 +121,9 @@ function numPages()
 }
 
 window.onload = function() {
-    // let categoriesData = document.getElementById("categoriesForSearch");
-    // let categories = JSON.parse(categoriesData.innerHTML);
-    // let categoriesSelectList = document.getElementById("categories");
-    // let option = document.createElement("option");
-    // option.text = "-";
-    // option.value = "-";
-    // categoriesSelectList.add(option);
-    // if(categories.length > 0) {
-    //     for(let j = 0; j < categories.length; j++) {
-    //         option = document.createElement("option");
-    //         option.text = categories[j].category;
-    //         option.value = categories[j].category;
-    //         categoriesSelectList.add(option);
-    //     }
-    // }
+    let error = document.getElementById("error").innerText;
+    if(error != "") {
+        alert(error);
+    }
     changePage(1);
 };
