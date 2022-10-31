@@ -9,6 +9,6 @@ public class EmployeeController {
 
     @GetMapping("/employeeMain")
     public String showMainEmployeePage(Model model) {
-        return "employee_pages/employeeMain";
+        return "employeeMain";
     }
 }

@@ -1,0 +1,28 @@
+<link rel="stylesheet" th:href="@{/css/employeeSidebarStyle.css}">
+<div id="mySidebar" class="sidebar">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()"><i class="fa fa-times"></i></a>
+    <a class="border-bottom" th:href="@{/employeeMain}"><i class="fa fa-shopping-cart"></i>| Товары </a>
+    <a class="border-bottom" th:href="@{/clientsOrders}"><i class="fa fa-folder-open"></i>| Заказы</a>
+    <a class="border-bottom" th:href="@{/stockRefillOrders}"><i class="fa fa-truck"></i>| Закупки</a>
+    <a class="border-bottom" th:href="@{/statistics}"><i class="fa fa-pie-chart"></i>| Показатели</a>
+    <a class="border-bottom" th:href="@{/finances}"><i class="fa fa-rub"></i>| Финансы</a>
+    <a class="border-bottom" th:href="@{/suppliers}"><i class="fa fa-users"></i>| Контрагенты</a>
+    <a th:href="@{/users}"><i class="fa fa-id-card"></i>| Пользователи</a>
+</div>
+
+<div id="openSidebar">
+    <button class="openbtn" onclick="openNav()"><i class="fa fa-bars"></i></button>
+</div>
+
+<script>
+    function openNav() {
+        document.getElementById("mySidebar").style.width = "250px";
+        document.getElementById("openSidebar").style.display = "none";
+    }
+
+    function closeNav() {
+        document.getElementById("mySidebar").style.width = "0";
+        document.getElementById("openSidebar").style.display = "block";
+    }
+</script>
+
