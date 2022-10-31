@@ -17,6 +17,7 @@ public class SupplierCompany extends CustomEntity {
 
     @Column(name = "is_active")
     private boolean isActive;
+
     public SupplierCompany() {
     }
 
