@@ -25,26 +25,27 @@ public class CompleteClientsOrder extends CustomEntity {
     @JoinColumn(name = "complete_clients_order_id")
     private List<ComponentClientsOrder> clientsComponentOrders;
 
+    @Column(name = "delivery_address")
+    private String deliveryAddress;
+
     public CompleteClientsOrder() {
     }
 
-    public CompleteClientsOrder(User user, boolean isCompleted,
-                                LocalDate completeClientsOrderDate,
-                                List<ComponentClientsOrder> clientsComponentOrders) {
+    public CompleteClientsOrder(User user, boolean isCompleted, LocalDate completeClientsOrderDate, List<ComponentClientsOrder> clientsComponentOrders, String deliveryAddress) {
         this.user = user;
         this.isCompleted = isCompleted;
         this.completeClientsOrderDate = completeClientsOrderDate;
         this.clientsComponentOrders = clientsComponentOrders;
+        this.deliveryAddress = deliveryAddress;
     }
 
-    public CompleteClientsOrder(Long completeClientsOrderId, User user,
-                                boolean isCompleted, LocalDate completeClientsOrderDate,
-                                List<ComponentClientsOrder> clientsComponentOrders) {
+    public CompleteClientsOrder(Long completeClientsOrderId, User user, boolean isCompleted, LocalDate completeClientsOrderDate, List<ComponentClientsOrder> clientsComponentOrders, String deliveryAddress) {
         this.completeClientsOrderId = completeClientsOrderId;
         this.user = user;
         this.isCompleted = isCompleted;
         this.completeClientsOrderDate = completeClientsOrderDate;
         this.clientsComponentOrders = clientsComponentOrders;
+        this.deliveryAddress = deliveryAddress;
     }
 
     public Long getCompleteClientsOrderId() {
@@ -87,6 +88,14 @@ public class CompleteClientsOrder extends CustomEntity {
         this.clientsComponentOrders = clientsComponentOrders;
     }
 
+    public String getDeliveryAddress() {
+        return deliveryAddress;
+    }
+
+    public void setDeliveryAddress(String deliveryAddress) {
+        this.deliveryAddress = deliveryAddress;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -100,7 +109,9 @@ public class CompleteClientsOrder extends CustomEntity {
         if (user != null ? !user.equals(that.user) : that.user != null) return false;
         if (completeClientsOrderDate != null ? !completeClientsOrderDate.equals(that.completeClientsOrderDate) : that.completeClientsOrderDate != null)
             return false;
-        return clientsComponentOrders != null ? clientsComponentOrders.equals(that.clientsComponentOrders) : that.clientsComponentOrders == null;
+        if (clientsComponentOrders != null ? !clientsComponentOrders.equals(that.clientsComponentOrders) : that.clientsComponentOrders != null)
+            return false;
+        return deliveryAddress != null ? deliveryAddress.equals(that.deliveryAddress) : that.deliveryAddress == null;
     }
 
     @Override
@@ -110,6 +121,7 @@ public class CompleteClientsOrder extends CustomEntity {
         result = 31 * result + (isCompleted ? 1 : 0);
         result = 31 * result + (completeClientsOrderDate != null ? completeClientsOrderDate.hashCode() : 0);
         result = 31 * result + (clientsComponentOrders != null ? clientsComponentOrders.hashCode() : 0);
+        result = 31 * result + (deliveryAddress != null ? deliveryAddress.hashCode() : 0);
         return result;
     }
 
@@ -121,6 +133,7 @@ public class CompleteClientsOrder extends CustomEntity {
         sb.append(", isCompleted=").append(isCompleted);
         sb.append(", completeClientsOrderDate=").append(completeClientsOrderDate);
         sb.append(", clientsComponentOrders=").append(clientsComponentOrders);
+        sb.append(", deliveryAddress='").append(deliveryAddress).append('\'');
         sb.append('}');
         return sb.toString();
     }
