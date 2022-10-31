@@ -15,19 +15,22 @@ public class SupplierCompany extends CustomEntity {
     @Column(name = "supplier_company_email")
     private String supplierCompanyEmail;
 
+    @Column(name = "is_active")
+    private boolean isActive;
     public SupplierCompany() {
     }
 
-    public SupplierCompany(String supplierCompanyName, String supplierCompanyEmail) {
+    public SupplierCompany(String supplierCompanyName, String supplierCompanyEmail, boolean isActive) {
         this.supplierCompanyName = supplierCompanyName;
         this.supplierCompanyEmail = supplierCompanyEmail;
+        this.isActive = isActive;
     }
 
-    public SupplierCompany(Long supplierCompanyId, String supplierCompanyName,
-                           String supplierCompanyEmail) {
+    public SupplierCompany(Long supplierCompanyId, String supplierCompanyName, String supplierCompanyEmail, boolean isActive) {
         this.supplierCompanyId = supplierCompanyId;
         this.supplierCompanyName = supplierCompanyName;
         this.supplierCompanyEmail = supplierCompanyEmail;
+        this.isActive = isActive;
     }
 
     public Long getSupplierCompanyId() {
@@ -54,6 +57,14 @@ public class SupplierCompany extends CustomEntity {
         this.supplierCompanyEmail = supplierCompanyEmail;
     }
 
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -61,6 +72,7 @@ public class SupplierCompany extends CustomEntity {
 
         SupplierCompany that = (SupplierCompany) o;
 
+        if (isActive != that.isActive) return false;
         if (supplierCompanyId != null ? !supplierCompanyId.equals(that.supplierCompanyId) : that.supplierCompanyId != null)
             return false;
         if (supplierCompanyName != null ? !supplierCompanyName.equals(that.supplierCompanyName) : that.supplierCompanyName != null)
@@ -73,6 +85,7 @@ public class SupplierCompany extends CustomEntity {
         int result = supplierCompanyId != null ? supplierCompanyId.hashCode() : 0;
         result = 31 * result + (supplierCompanyName != null ? supplierCompanyName.hashCode() : 0);
         result = 31 * result + (supplierCompanyEmail != null ? supplierCompanyEmail.hashCode() : 0);
+        result = 31 * result + (isActive ? 1 : 0);
         return result;
     }
 
@@ -82,6 +95,7 @@ public class SupplierCompany extends CustomEntity {
         sb.append("supplierCompanyId=").append(supplierCompanyId);
         sb.append(", supplierCompanyName='").append(supplierCompanyName).append('\'');
         sb.append(", supplierCompanyEmail='").append(supplierCompanyEmail).append('\'');
+        sb.append(", isActive=").append(isActive);
         sb.append('}');
         return sb.toString();
     }
