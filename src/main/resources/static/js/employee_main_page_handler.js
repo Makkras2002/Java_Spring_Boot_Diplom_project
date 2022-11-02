@@ -109,7 +109,7 @@ function changePage(page)
             "'/>" +
             "</td>"+
             "<td>"+
-            "<button form='"+i+"' type='submit' class='btn btn-success'>"+"Обновить данные"+
+            "<button form='"+i+"' type='submit' onclick='checkIfDataWasUpdated(event,"+i+")' class='btn btn-success'>"+"Обновить данные"+
             "</button></td>"
             +"</tr>";
         listing_table.innerHTML += tr;
@@ -188,6 +188,12 @@ function changeColorOnFieldUpdate(formNumber,paramName) {
         element.style.color = "black";
         element.style.fontStyle = "normal";
         document.getElementById(formNumber).classList.remove("updated");
+    }
+}
+function checkIfDataWasUpdated(event,formNumber) {
+    if(!document.getElementById(formNumber).classList.contains("updated")) {
+        event.preventDefault();
+        alert("Никакие данные о продукте не были изменены. Обновление не требуется.");
     }
 }
 
