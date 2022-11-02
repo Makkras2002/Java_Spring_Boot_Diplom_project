@@ -17,6 +17,7 @@
 <div id="productData" style="display: none" th:text="${allProducts}"></div>
 <div id="productCategories" style="display: none" th:text="${productCategories}"></div>
 <datalist id="categoriesList" style="display: none"></datalist>
+<div id="csrf" th:text="${_csrf.getToken()}" style="display: none"></div>
 <div id="error" style="display: none" th:text="${error}"></div>
 <div id="context" style="display: none" th:text="${#request.getContextPath()}"></div>
 <div class="row mx-auto justify-content-center">

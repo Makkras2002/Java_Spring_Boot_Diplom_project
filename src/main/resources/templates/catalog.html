@@ -11,6 +11,7 @@
 <body>
 <header th:insert="header.html :: header"/>
 <div id="productData" style="display: none" th:text="${productsInStock}"></div>
+<div id="csrf" th:text="${_csrf.getToken()}" style="display: none"></div>
 <div id="error" style="display: none" th:text="${error}"></div>
 <div id="context" style="display: none" th:text="${#request.getContextPath()}"></div>
 <div class="row mx-auto justify-content-center">

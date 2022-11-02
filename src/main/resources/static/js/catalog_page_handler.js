@@ -67,11 +67,11 @@ function changePage(page)
                 "</tr>";
         }
         tr +=
-            "<form id='"+i+"' method='post' action='"+context+"/addToBasket'><input form='"+i+"' type='hidden' name='product_id' id='product_id' required='required' readonly='readonly' value='"+
+            "<form id='"+i+"' method='post' action='"+context+"/addToBasket'><input form='"+i+"' type='hidden' name='product_id' id='product_id"+i+"' required='required' readonly='readonly' value='"+
             products[i].productId +
-            "'/>" + "<input form='"+i+"' type='hidden' name='category_id' id='category_id' required='required' readonly='readonly' value='"+
+            "'/>" + "<input form='"+i+"' type='hidden' name='category_id' id='category_id"+i+"' required='required' readonly='readonly' value='"+
             products[i].category.categoryId +
-            "'/>" +
+            "'/><input form='"+i+"' type='hidden' name='_csrf' value='"+document.getElementById("csrf").innerText+"'/>" +
             "</form>" +
             "<tr><td>"+i+"</td>" +
             "<td>" +
@@ -89,7 +89,7 @@ function changePage(page)
             "<td>" +
             products[i].productComment+
             "</td>"+
-            "<td><input form='"+i+"' type='number' name='amount'  id='amount' min='1' max='"+products[i].amountInStock+"' step='1' required='required'"+
+            "<td><input form='"+i+"' type='number' name='amount'  id='amount"+i+"' min='1' max='"+products[i].amountInStock+"' step='1' required='required'"+
             "/></td>" +
             "<td>" +
             products[i].amountInStock+ " ед."+

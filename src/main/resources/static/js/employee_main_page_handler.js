@@ -75,42 +75,41 @@ function changePage(page)
         }
 
         tr +=
-            "<form class='productForm' id='"+i+"' method='post' action='"+context+"/saveChanges'><input form='"+i+"' type='hidden' name='product_id' id='product_id' required='required' readonly='readonly' value='"+
+            "<form class='productForm' id='"+i+"' method='post' action='"+context+"/updateProductData'><input form='"+i+"' type='hidden' name='product_id' id='product_id"+i+"' required='required' readonly='readonly' value='"+
             products[i].productId +
-            "'/>" + "</form>" +
+            "'/><input form='"+i+"' type='hidden' name='_csrf' value='"+document.getElementById("csrf").innerText+"'/>" + "</form>" +
             "<tr><td>"+i+"</td>" +
-            "<td>" + "<input form='"+i+"' type='text' name='name' id='name' minlength='3' value='"+
+            "<td>" + "<input onchange = \"changeColorOnFieldUpdate("+i+",'name')\" form='"+i+"' type='text' name='name' id='name"+i+"' minlength='3' value='"+
             products[i].productName +
             "'/>" +
             "</td>" +
-            "<td>" + "<input form='"+i+"' list='categoriesList' autocomplete='off' name='category' id='category' value='"+
+            "<td>" + "<input onchange = \"changeColorOnFieldUpdate("+i+",'category')\" form='"+i+"' list='categoriesList' autocomplete='off' name='category' id='category"+i+"' value='"+
             products[i].category.category +
             "'/>" +
             "</td>" +
-            "<td>" + "<input form='"+i+"' type='number' name='price' id='price' min='0' value='"+
+            "<td>" + "<input onchange = \"changeColorOnFieldUpdate("+i+",'price')\" form='"+i+"' type='number' name='price' id='price"+i+"' min='0' step='0.01' value='"+
             products[i].productPrice +
             "'/>"
              +" BYN"+
             "</td>" +
             "<td><img src='" +context+"/"+
             products[i].picturePath+
-            "' alt='"+products[i].productName+"' width='60px' height='60px'/>"+"<br/><input form='"+i+"' type='file' name='picture' id='picture'/>"+
-            +"</td>" +
-            "<td>" + "<textarea form='"+i+"' name='comment' id='comment' minlength='3'>"+
+            "' alt='"+products[i].productName+"' width='60px' height='60px'/>"+"<br/><input form='"+i+"' type='file' name='picture' id='picture"+i+"' style='display: none'/><input class='btn btn-sm btn-secondary' type=\"button\" value=\"Выбрать...\" onclick=\"document.getElementById('picture"+i+"').click();\"/></td>" +
+            "<td>" + "<textarea onchange = \"changeColorOnFieldUpdate("+i+",'comment')\" form='"+i+"' name='comment' id='comment"+i+"' minlength='3'>"+
             products[i].productComment +
             "</textarea>" +
             "</td>"+
-            "<td><input form='"+i+"' type='number' name='amount'  id='amount' step='1' value='0'"+
+            "<td><input onchange = \"changeColorOnFieldUpdate("+i+",'amount')\" form='"+i+"' type='number' name='amount'  id='amount"+i+"' step='1' value='0'"+
             "/></td>" +
             "<td>" +
             products[i].amountInStock+ " ед."+
             "</td>"+
-            "<td>" + "<input form='"+i+"' type='checkbox' name='isAvailable' id='isAvailable' min='0' checked='"+
+            "<td>" + "<input class='form-check' form='"+i+"' type='checkbox' name='isAvailable' id='isAvailable"+i+"' checked='"+
             products[i].isAvailable +
             "'/>" +
             "</td>"+
             "<td>"+
-            "<button form='"+i+"' type='submit' class='btn btn-success'>"+"Сохранить изменения"+
+            "<button form='"+i+"' type='submit' class='btn btn-success'>"+"Обновить данные"+
             "</button></td>"
             +"</tr>";
         listing_table.innerHTML += tr;
@@ -152,4 +151,43 @@ window.onload = function() {
     }
     changePage(1);
 };
+
+function changeColorOnFieldUpdate(formNumber,paramName) {
+    let element = document.getElementById(paramName+formNumber);
+    let field;
+    switch (paramName) {
+        case 'name' : {
+            field = products[formNumber].productName;
+            break;
+        }
+        case 'category' : {
+            field = products[formNumber].category.category;
+            break;
+        }
+        case 'price' : {
+            field = products[formNumber].productPrice.toString();
+            break;
+        }
+        case 'comment' : {
+            field = products[formNumber].productComment;
+            break;
+        }
+        case 'amount' : {
+            field = '0';
+            break;
+        }
+        default : {
+            break;
+        }
+    }
+    if(element.value !== field) {
+        element.style.color = "orange";
+        element.style.fontStyle = "italic";
+        document.getElementById(formNumber).classList.add("updated");
+    }  else {
+        element.style.color = "black";
+        element.style.fontStyle = "normal";
+        document.getElementById(formNumber).classList.remove("updated");
+    }
+}
 
