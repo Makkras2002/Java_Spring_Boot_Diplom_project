@@ -75,7 +75,7 @@ function changePage(page)
         }
 
         tr +=
-            "<form class='productForm' id='"+i+"' method='post' action='"+context+"/updateProductData'><input form='"+i+"' type='hidden' name='product_id' id='product_id"+i+"' required='required' readonly='readonly' value='"+
+            "<form id='"+i+"' method='post' action='"+context+"/updateProductData'><input form='"+i+"' type='hidden' name='product_id' id='product_id"+i+"' required='required' readonly='readonly' value='"+
             products[i].productId +
             "'/><input form='"+i+"' type='hidden' name='_csrf' value='"+document.getElementById("csrf").innerText+"'/>" + "</form>" +
             "<tr><td>"+i+"</td>" +
@@ -93,8 +93,8 @@ function changePage(page)
              +" BYN"+
             "</td>" +
             "<td><img src='" +context+"/"+
-            products[i].picturePath+
-            "' alt='"+products[i].productName+"' width='60px' height='60px'/>"+"<br/><input form='"+i+"' type='file' name='picture' id='picture"+i+"' style='display: none'/><input class='btn btn-sm btn-secondary' type=\"button\" value=\"Выбрать...\" onclick=\"document.getElementById('picture"+i+"').click();\"/></td>" +
+            products[i].picturePath +
+            "' alt='"+products[i].productName+"' width='60px' height='60px'/>"+"<br/><br/><input onchange = \"changeColorOnFieldUpdate("+i+",'picture')\" form='"+i+"' type='file' name='picture' id='picture"+i+"' style='display: none'/><input class='btn btn-sm btn-secondary' type=\"button\" value=\"Выбрать...\" onclick=\"document.getElementById('picture"+i+"').click();\"/></td>" +
             "<td>" + "<textarea onchange = \"changeColorOnFieldUpdate("+i+",'comment')\" form='"+i+"' name='comment' id='comment"+i+"' minlength='3'>"+
             products[i].productComment +
             "</textarea>" +
@@ -102,9 +102,9 @@ function changePage(page)
             "<td><input onchange = \"changeColorOnFieldUpdate("+i+",'amount')\" form='"+i+"' type='number' name='amount'  id='amount"+i+"' step='1' value='0'"+
             "/></td>" +
             "<td>" +
-            products[i].amountInStock+ " ед."+
+            products[i].amountInStock+ " ед." +
             "</td>"+
-            "<td>" + "<input class='form-check' form='"+i+"' type='checkbox' name='isAvailable' id='isAvailable"+i+"' checked='"+
+            "<td>" + "<input onchange = \"changeColorOnFieldUpdate("+i+",'isAvailable')\" class='form-check' form='"+i+"' type='checkbox' name='isAvailable' id='isAvailable"+i+"' checked='"+
             products[i].isAvailable +
             "'/>" +
             "</td>"+
@@ -176,22 +176,39 @@ function changeColorOnFieldUpdate(formNumber,paramName) {
             field = '0';
             break;
         }
+        case 'isAvailable' : {
+            field = products[formNumber].isAvailable;
+            break;
+        }
+        case 'picture' : {
+            field = products[formNumber].picturePath;
+            break;
+        }
         default : {
             break;
         }
     }
-    if(element.value !== field) {
-        element.style.color = "orange";
-        element.style.fontStyle = "italic";
-        document.getElementById(formNumber).classList.add("updated");
-    }  else {
-        element.style.color = "black";
-        element.style.fontStyle = "normal";
-        document.getElementById(formNumber).classList.remove("updated");
+    if(paramName === "isAvailable") {
+        if(element.checked && field || !element.checked && !field) {
+            document.getElementById(formNumber).classList.remove("updated_"+paramName);
+        } else {
+            document.getElementById(formNumber).classList.add("updated_"+paramName);
+        }
+    } else {
+        if(element.value !== field) {
+            element.style.color = "orange";
+            element.style.fontStyle = "italic";
+            document.getElementById(formNumber).classList.add("updated_"+paramName);
+        }  else {
+            element.style.color = "black";
+            element.style.fontStyle = "normal";
+            document.getElementById(formNumber).classList.remove("updated_"+paramName);
+        }
     }
+
 }
 function checkIfDataWasUpdated(event,formNumber) {
-    if(!document.getElementById(formNumber).classList.contains("updated")) {
+    if(document.getElementById(formNumber).classList.length===0) {
         event.preventDefault();
         alert("Никакие данные о продукте не были изменены. Обновление не требуется.");
     }
