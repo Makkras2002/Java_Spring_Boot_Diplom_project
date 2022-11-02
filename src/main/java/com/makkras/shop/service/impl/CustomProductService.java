@@ -33,6 +33,11 @@ public class CustomProductService implements ProductService {
     }
 
     @Override
+    public List<Product> getAllProducts() {
+        return productJpaRepository.findAll();
+    }
+
+    @Override
     public List<Product> getAllAvailableAndInStockProducts() {
         return productJpaRepository.findAllByAmountInStockGreaterThanAndIsAvailable(0L,true);
     }

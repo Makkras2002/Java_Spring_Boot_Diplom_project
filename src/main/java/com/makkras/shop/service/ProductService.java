@@ -13,4 +13,5 @@ public interface ProductService {
     List<Product> getAllAvailableAndInStockProductsAndOrderByName();
     List<Product> getAllAvailableAndInStockProductsAndOrderByCategory();
     List<ProductCategory> getAllProductCategories();
+    List<Product> getAllProducts();
 }

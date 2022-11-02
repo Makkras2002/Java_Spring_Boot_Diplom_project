@@ -1,8 +1,12 @@
 let current_page = 1;
 let records_per_page = 5;
 let productData = document.getElementById("productData");
+let productCategoriesData = document.getElementById("productCategories");
 let context = document.getElementById("context").innerText;
-let products=  JSON.parse(productData.innerHTML);
+let products =  JSON.parse(productData.innerHTML);
+let categories = JSON.parse(productCategoriesData.innerHTML);
+
+
 
 function prevPage()
 {
@@ -56,46 +60,57 @@ function changePage(page)
                 "Комментарий" +
                 "</td>" +
                 "<td style='color: green; font-weight: bolder'>" +
-                "Необходимое количество" +
+                "Уменьшить или увеличить кол-во продукта" +
                 "</td>" +
                 "<td style='color: green; font-weight: bolder'>" +
                 "Имеющееся количество на складе" +
+                "</td>" +
+                "<td style='color: green; font-weight: bolder'>" +
+                "Товар доступен для продажи" +
                 "</td>" +
                 "<td>" +
                 "" +
                 "</td>" +
                 "</tr>";
         }
+
         tr +=
-            "<form id='"+i+"' method='post' action='"+context+"/addToBasket'><input form='"+i+"' type='hidden' name='product_id' id='product_id' required='required' readonly='readonly' value='"+
+            "<form class='productForm' id='"+i+"' method='post' action='"+context+"/saveChanges'><input form='"+i+"' type='hidden' name='product_id' id='product_id' required='required' readonly='readonly' value='"+
             products[i].productId +
-            "'/>" + "<input form='"+i+"' type='hidden' name='category_id' id='category_id' required='required' readonly='readonly' value='"+
-            products[i].category.categoryId +
-            "'/>" +
-            "</form>" +
+            "'/>" + "</form>" +
             "<tr><td>"+i+"</td>" +
-            "<td>" +
-            products[i].productName+
+            "<td>" + "<input form='"+i+"' type='text' name='name' id='name' minlength='3' value='"+
+            products[i].productName +
+            "'/>" +
             "</td>" +
-            "<td>" +
+            "<td>" + "<input form='"+i+"' list='categoriesList' autocomplete='off' name='category' id='category' value='"+
             products[i].category.category +
+            "'/>" +
             "</td>" +
-            "<td>" +
-            products[i].productPrice +" BYN"+
+            "<td>" + "<input form='"+i+"' type='number' name='price' id='price' min='0' value='"+
+            products[i].productPrice +
+            "'/>"
+             +" BYN"+
             "</td>" +
             "<td><img src='" +context+"/"+
             products[i].picturePath+
-            "' alt='"+products[i].productName+"' width='120px' height='120px'/></td>" +
-            "<td>" +
-            products[i].productComment+
+            "' alt='"+products[i].productName+"' width='60px' height='60px'/>"+"<br/><input form='"+i+"' type='file' name='picture' id='picture'/>"+
+            +"</td>" +
+            "<td>" + "<textarea form='"+i+"' name='comment' id='comment' minlength='3'>"+
+            products[i].productComment +
+            "</textarea>" +
             "</td>"+
-            "<td><input form='"+i+"' type='number' name='amount'  id='amount' min='1' max='"+products[i].amountInStock+"' step='1' required='required'"+
+            "<td><input form='"+i+"' type='number' name='amount'  id='amount' step='1' value='0'"+
             "/></td>" +
             "<td>" +
             products[i].amountInStock+ " ед."+
             "</td>"+
+            "<td>" + "<input form='"+i+"' type='checkbox' name='isAvailable' id='isAvailable' min='0' checked='"+
+            products[i].isAvailable +
+            "'/>" +
+            "</td>"+
             "<td>"+
-            "<button form='"+i+"' type='submit' class='btn btn-primary'>"+"Добавить в корзину"+
+            "<button form='"+i+"' type='submit' class='btn btn-success'>"+"Сохранить изменения"+
             "</button></td>"
             +"</tr>";
         listing_table.innerHTML += tr;
@@ -121,9 +136,20 @@ function numPages()
 }
 
 window.onload = function() {
+    let categoriesSelectList = document.getElementById("categoriesList");
+    let option;
+    if (categories.length > 0) {
+        for (let j = 0; j < categories.length; j++) {
+            option = document.createElement("option");
+            option.text = categories[j].category;
+            option.value = categories[j].category;
+            categoriesSelectList.appendChild(option);
+        }
+    }
     let error = document.getElementById("error").innerText;
     if(error != "") {
         alert(error);
     }
     changePage(1);
 };
+
