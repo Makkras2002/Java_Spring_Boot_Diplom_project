@@ -75,15 +75,15 @@ function changePage(page)
         }
 
         tr +=
-            "<form id='"+i+"' method='post' action='"+context+"/updateProductData'><input form='"+i+"' type='hidden' name='product_id' id='product_id"+i+"' required='required' readonly='readonly' value='"+
+            "<form enctype='multipart/form-data' id='"+i+"' method='post' action='"+context+"/updateProductData'><input form='"+i+"' type='hidden' name='product_id' id='product_id"+i+"' required='required' readonly='readonly' value='"+
             products[i].productId +
             "'/><input form='"+i+"' type='hidden' name='_csrf' value='"+document.getElementById("csrf").innerText+"'/>" + "</form>" +
             "<tr><td>"+i+"</td>" +
-            "<td>" + "<input onchange = \"changeColorOnFieldUpdate("+i+",'name')\" form='"+i+"' type='text' name='name' id='name"+i+"' minlength='3' value='"+
+            "<td>" + "<input onchange = \"changeColorOnFieldUpdate("+i+",'name')\" form='"+i+"' type='text' name='name' id='name"+i+"' minlength='3' maxlength='100' value='"+
             products[i].productName +
             "'/>" +
             "</td>" +
-            "<td>" + "<input onchange = \"changeColorOnFieldUpdate("+i+",'category')\" form='"+i+"' list='categoriesList' autocomplete='off' name='category' id='category"+i+"' value='"+
+            "<td>" + "<input onchange = \"changeColorOnFieldUpdate("+i+",'category')\" form='"+i+"' list='categoriesList' minlength='3' maxlength='100' autocomplete='off' name='category' id='category"+i+"' value='"+
             products[i].category.category +
             "'/>" +
             "</td>" +
@@ -94,7 +94,7 @@ function changePage(page)
             "</td>" +
             "<td><img src='" +context+"/"+
             products[i].picturePath +
-            "' alt='"+products[i].productName+"' width='60px' height='60px'/>"+"<br/><br/><input onchange = \"changeColorOnFieldUpdate("+i+",'picture')\" form='"+i+"' type='file' name='picture' id='picture"+i+"' style='display: none'/><input class='btn btn-sm btn-secondary' type=\"button\" value=\"Выбрать...\" onclick=\"document.getElementById('picture"+i+"').click();\"/></td>" +
+            "' alt='"+products[i].productName+"' width='60px' height='60px'/>"+"<br/><br/><input onchange = \"changeColorOnFieldUpdate("+i+",'picture')\" form='"+i+"' type='file' accept='.png' name='picture' id='picture"+i+"' style='display: none'/><input class='btn btn-sm btn-secondary' type=\"button\" value=\"Выбрать...\" onclick=\"document.getElementById('picture"+i+"').click();\"/></td>" +
             "<td>" + "<textarea onchange = \"changeColorOnFieldUpdate("+i+",'comment')\" form='"+i+"' name='comment' id='comment"+i+"' minlength='3'>"+
             products[i].productComment +
             "</textarea>" +
@@ -104,7 +104,7 @@ function changePage(page)
             "<td>" +
             products[i].amountInStock+ " ед." +
             "</td>"+
-            "<td>" + "<input onchange = \"changeColorOnFieldUpdate("+i+",'isAvailable')\" class='form-check' form='"+i+"' type='checkbox' name='isAvailable' id='isAvailable"+i+"' checked='"+
+            "<td>" + "<input onchange = \"changeColorOnFieldUpdate("+i+",'isAvailable')\" class='form-check' form='"+i+"' type='checkbox' name='isAvailable' id='isAvailable"+i+"' value='"+
             products[i].isAvailable +
             "'/>" +
             "</td>"+
@@ -204,6 +204,14 @@ function changeColorOnFieldUpdate(formNumber,paramName) {
             element.style.fontStyle = "normal";
             document.getElementById(formNumber).classList.remove("updated_"+paramName);
         }
+    }
+
+}
+function removeCheckedIfFalse(formNumber) {
+    let element = document.getElementById("isAvailable"+formNumber).value;
+    alert(element);
+    if(element === false) {
+        document.getElementById("isAvailable"+formNumber).removeAttribute('checked');
     }
 
 }

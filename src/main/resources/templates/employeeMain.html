@@ -61,10 +61,9 @@
     </div>
 </div>
 <div class="row justify-content-center mt-2">
-    <a th:href="@{/addProduct}" type="button" class="btn btn-outline-primary mx-auto w-auto">Добавить новый продукт на склад</a>
+    <button class="btn btn-outline-primary mx-auto w-auto" data-bs-toggle="modal" data-bs-target="#addProductModal">Добавить новый продукт на склад</button>
 </div>
-<div th:insert="modals/searchAndFilterModal.html" :: div/>
-
+<div th:insert="modals/addProductModal.html" :: div/>
 <footer th:insert="footer.html" :: footer/>
 </body>
 <script type="text/javascript" th:src="@{/js/employee_main_page_handler.js}"></script>

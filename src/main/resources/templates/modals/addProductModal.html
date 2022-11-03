@@ -1,0 +1,37 @@
+<div class="modal fade" id="addProductModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="addProductModalLabel">Добавление нового продукта на склад</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body justify-content-center">
+                <form th:action="@{/addProduct}" enctype="multipart/form-data"  method="post" id="addProductForm">
+                    <label for="name" class="form-label">Введите название товара</label>
+                    <input class="form-control mb-2" type="text" id="name" minlength="3" maxlength="100" name="name" placeholder="Название товара" required="required"/>
+                    <label for="category" class="form-label mt-2">Выберите категорию товара</label>
+                    <input list="categoryList" autocomplete="off" name="category" id="category" minlength="3" maxlength="100" required="required"/>
+                    <label for="price" class="form-label mt-2">Введите цену товара</label>
+                    <input class="form-control" type="number" min="0" step="0.01" name="price" id="price" required="required"/>
+                    <label for="amount" class="form-label mt-2">Введите количество товара на складе</label>
+                    <input class="form-control" type="number" min="0" step="1" name="amount" id="amount" required="required"/>
+                    <input type="file" accept=".png" name="picture" id="picture" style="display: none"/>
+                    <input class="btn btn-sm btn-secondary w-auto mt-2" type="button" value="Выбрать изображение товара..." onclick="document.getElementById('picture').click();"/>
+                    <br/>
+                    <label for="comment" class="form-label mt-2">Комментарий к товару</label>
+                    <textarea class="form-text" rows="5" name="comment" id="comment" required="required"></textarea>
+                    <label for="isAvailable" class="form-label mt-2">Доступен ли товар для продажи клиентам</label>
+                    <input type="checkbox" class="form-check form-switch" name="isAvailable" id="isAvailable"/>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" form="addProductForm" class="btn btn-outline-primary">Добавить продукт</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>
+<datalist id="categoryList">
+    <option selected="selected" disabled="disabled" value="-">-</option>
+    <option th:each="category : ${categories}" th:text="${category.category}" th:value="${category.category}"></option>
+</datalist>
