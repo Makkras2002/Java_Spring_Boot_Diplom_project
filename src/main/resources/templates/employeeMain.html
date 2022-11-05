@@ -22,7 +22,7 @@
 <div id="context" style="display: none" th:text="${#request.getContextPath()}"></div>
 <div class="row mx-auto justify-content-center">
     <div class="col-4 mx-auto">
-        <button type="button" class="btn btn-warning col-md-1 w-auto mx-auto" data-bs-toggle="modal" data-bs-target="#searchModal">
+        <button type="button" class="btn btn-warning col-md-1 w-auto mx-auto" data-bs-toggle="modal" data-bs-target="#searchEmployeeModal">
             <i class="fa fa-search"></i>|
             Фильтрация и поиск
         </button>
@@ -35,6 +35,7 @@
                 <option style="color: darkorange" value="byPriceDesc">По убыванию цены</option>
                 <option style="color: darkorange" value="byName">По названию</option>
                 <option style="color: darkorange" value="byCategory">По категории</option>
+                <option style="color: darkorange" value="byAvailability">По доступности</option>
             </select>
         </form>
     </div>
@@ -63,6 +64,7 @@
 <div class="row justify-content-center mt-2">
     <button class="btn btn-outline-primary mx-auto w-auto" data-bs-toggle="modal" data-bs-target="#addProductModal">Добавить новый продукт на склад</button>
 </div>
+<div th:insert="modals/searchAndFilterEmployeeModal.html" :: div/>
 <div th:insert="modals/addProductModal.html" :: div/>
 <footer th:insert="footer.html" :: footer/>
 </body>

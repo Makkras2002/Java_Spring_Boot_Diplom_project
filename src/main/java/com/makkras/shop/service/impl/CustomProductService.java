@@ -2,34 +2,32 @@ package com.makkras.shop.service.impl;
 
 import com.makkras.shop.entity.Product;
 import com.makkras.shop.entity.ProductCategory;
+import com.makkras.shop.exception.CustomServiceException;
 import com.makkras.shop.repo.CategoryJpaRepository;
 import com.makkras.shop.repo.ProductJpaRepository;
 import com.makkras.shop.service.ProductService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import com.makkras.shop.util.FileUploadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class CustomProductService implements ProductService {
-    private static final String FULL_PRODUCT_PICTURES_LOCATION_FOLDER = "src/main/resources/static/pictures/product_pictures/";
-    private static final Logger logger = LogManager.getLogger();
     private final ProductJpaRepository productJpaRepository;
     private final CategoryJpaRepository categoryJpaRepository;
+    private final FileUploadUtil fileUploadUtil;
 
     @Autowired
     public CustomProductService(ProductJpaRepository productJpaRepository,
-                                CategoryJpaRepository categoryJpaRepository) {
+                                CategoryJpaRepository categoryJpaRepository,
+                                FileUploadUtil fileUploadUtil) {
         this.productJpaRepository = productJpaRepository;
         this.categoryJpaRepository = categoryJpaRepository;
+        this.fileUploadUtil = fileUploadUtil;
     }
 
     @Override
@@ -79,22 +77,32 @@ public class CustomProductService implements ProductService {
         return productJpaRepository.findAllByAmountInStockGreaterThanAndIsAvailableOrderByCategoryCategory(0L,true);
     }
 
-    public void createNewPictureForProductInResources(MultipartFile multipartFile) {
-        try {
-            File newPictureFile = new File(FULL_PRODUCT_PICTURES_LOCATION_FOLDER+multipartFile.getOriginalFilename());
-            if(newPictureFile.createNewFile()) {
-                byte[] bytes = multipartFile.getBytes();
-                try(FileOutputStream fileOutputStream = new FileOutputStream(FULL_PRODUCT_PICTURES_LOCATION_FOLDER+multipartFile.getOriginalFilename());
-                    BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream)) {
-                    bufferedOutputStream.write(bytes);
-                }
-            }
-        } catch (IOException exception) {
-            logger.error(exception.getMessage());
-        }
+    @Override
+    public List<Product> getAllProductsAndOrderByPriceAsc() {
+        return productJpaRepository.findAllByOrderByProductPriceAsc();
     }
 
-    public boolean updateProductData(Product updatedProduct) {
+    @Override
+    public List<Product> getAllProductsAndOrderByPriceDesc() {
+        return productJpaRepository.findAllByOrderByProductPriceDesc();
+    }
+
+    @Override
+    public List<Product> getAllProductsAndOrderByName() {
+        return productJpaRepository.findAllByOrderByProductName();
+    }
+
+    @Override
+    public List<Product> getAllProductsAndOrderByCategory() {
+        return productJpaRepository.findAllByOrderByCategoryCategory();
+    }
+
+    @Override
+    public List<Product> getAllProductsAndOrderByIsAvailable() {
+        return productJpaRepository.findAllByOrderByIsAvailableDesc();
+    }
+
+    public boolean updateProductData(Product updatedProduct, String productPictureLocationDir, MultipartFile pictureFile) throws CustomServiceException {
         Long productForUpdateId = updatedProduct.getProductId();
         Optional<Product> oldProductOptional = productJpaRepository.findById(productForUpdateId);
         if(oldProductOptional.isPresent()) {
@@ -109,7 +117,12 @@ public class CustomProductService implements ProductService {
                 productJpaRepository.updateProductAmountInStock(oldProduct.getAmountInStock() + updatedProduct.getAmountInStock(), productForUpdateId);
             }
             if(!updatedProduct.getPicturePath().isBlank() && !updatedProduct.getPicturePath().equals(oldProduct.getPicturePath())) {
-                productJpaRepository.updateProductPicturePath("pictures/product_pictures/"+updatedProduct.getPicturePath(),productForUpdateId);
+                try {
+                    fileUploadUtil.saveFile(productPictureLocationDir, updatedProduct.getPicturePath(), pictureFile);
+                    productJpaRepository.updateProductPicturePath(updatedProduct.getPicturePath(),productForUpdateId);
+                } catch (IOException exception) {
+                    throw new CustomServiceException(exception.getMessage());
+                }
             }
             if(!updatedProduct.getProductComment().equals(oldProduct.getProductComment())) {
                 productJpaRepository.updateProductComment(updatedProduct.getProductComment(), productForUpdateId);

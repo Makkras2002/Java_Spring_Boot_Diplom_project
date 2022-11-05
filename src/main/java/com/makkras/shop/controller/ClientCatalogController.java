@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.makkras.shop.entity.Product;
 import com.makkras.shop.service.ProductService;
 import com.makkras.shop.service.impl.CustomProductService;
+import com.makkras.shop.util.ProductFilterUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,18 +14,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
-public class ClientController {
-    private static final String SORT_TYPE_NOT_SELECTED_ERROR = "Способ сортировки не был выбран!";
-    private static final String NONE_PRODUCTS_WERE_FOUND_DURING_SEARCH = "Продукты, соответствующие параметрам поиска, не были найдены!";
+public class ClientCatalogController {
+    public static final String SORT_TYPE_NOT_SELECTED_ERROR = "Способ сортировки не был выбран!";
+    public static final String NONE_PRODUCTS_WERE_FOUND_DURING_SEARCH = "Продукты, соответствующие параметрам поиска, не были найдены!";
     private final ProductService productService;
+    private final ProductFilterUtil productFilterUtil;
     private final Gson gson;
 
     @Autowired
-    public ClientController(CustomProductService productService) {
+    public ClientCatalogController(CustomProductService productService, ProductFilterUtil productFilterUtil) {
         this.productService = productService;
+        this.productFilterUtil = productFilterUtil;
         this.gson = new Gson();
     }
 
@@ -43,12 +45,7 @@ public class ClientController {
                                            @RequestParam(required = false) BigDecimal minPrice,
                                            @RequestParam(required = false) BigDecimal maxPrice) {
         List<Product> allProducts = productService.getAllAvailableAndInStockProducts();
-        List<Product> filteredProducts = allProducts.stream()
-                .filter(product -> name==null || (product.getProductName().toLowerCase().contains(name.toLowerCase()) && name.length()>2) || name.length()<=2)
-                .filter(product -> category==null || product.getCategory().getCategory().equals(category) || category.equals("-"))
-                .filter(product -> minPrice== null || product.getProductPrice().doubleValue()>=minPrice.doubleValue())
-                .filter(product -> maxPrice==null || product.getProductPrice().doubleValue()<= maxPrice.doubleValue())
-                .collect(Collectors.toList());
+        List<Product> filteredProducts = productFilterUtil.filter(allProducts,name,category,minPrice,maxPrice);
         if(filteredProducts.size()==0) {
             model.addAttribute("error",NONE_PRODUCTS_WERE_FOUND_DURING_SEARCH);
         }

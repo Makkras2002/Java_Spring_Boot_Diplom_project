@@ -83,7 +83,7 @@ function changePage(page)
             "<td>" +
             products[i].productPrice +" BYN"+
             "</td>" +
-            "<td><img src='" +context+"/"+
+            "<td><img src='" +context+"/prod_pics/"+
             products[i].picturePath+
             "' alt='"+products[i].productName+"' width='120px' height='120px'/></td>" +
             "<td>" +

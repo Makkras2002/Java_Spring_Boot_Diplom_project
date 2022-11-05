@@ -15,7 +15,7 @@
                     <input class="form-control" type="number" min="0" step="0.01" name="price" id="price" required="required"/>
                     <label for="amount" class="form-label mt-2">Введите количество товара на складе</label>
                     <input class="form-control" type="number" min="0" step="1" name="amount" id="amount" required="required"/>
-                    <input type="file" accept=".png" name="picture" id="picture" style="display: none"/>
+                    <input type="file" accept=".png,.jpg" name="picture" id="picture" style="display: none" required="required"/>
                     <input class="btn btn-sm btn-secondary w-auto mt-2" type="button" value="Выбрать изображение товара..." onclick="document.getElementById('picture').click();"/>
                     <br/>
                     <label for="comment" class="form-label mt-2">Комментарий к товару</label>

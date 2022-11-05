@@ -92,9 +92,9 @@ function changePage(page)
             "'/>"
              +" BYN"+
             "</td>" +
-            "<td><img src='" +context+"/"+
+            "<td><img src='" +context+"/prod_pics/"+
             products[i].picturePath +
-            "' alt='"+products[i].productName+"' width='60px' height='60px'/>"+"<br/><br/><input onchange = \"changeColorOnFieldUpdate("+i+",'picture')\" form='"+i+"' type='file' accept='.png' name='picture' id='picture"+i+"' style='display: none'/><input class='btn btn-sm btn-secondary' type=\"button\" value=\"Выбрать...\" onclick=\"document.getElementById('picture"+i+"').click();\"/></td>" +
+            "' alt='"+products[i].productName+"' width='60px' height='60px'/>"+"<br/><br/><input onchange = \"changeColorOnFieldUpdate("+i+",'picture')\" form='"+i+"' type='file' accept='.png,.jpg' name='picture' id='picture"+i+"' style='display: none'/><input class='btn btn-sm btn-secondary' type=\"button\" value=\"Выбрать...\" onclick=\"document.getElementById('picture"+i+"').click();\"/></td>" +
             "<td>" + "<textarea onchange = \"changeColorOnFieldUpdate("+i+",'comment')\" form='"+i+"' name='comment' id='comment"+i+"' minlength='3'>"+
             products[i].productComment +
             "</textarea>" +
@@ -104,7 +104,7 @@ function changePage(page)
             "<td>" +
             products[i].amountInStock+ " ед." +
             "</td>"+
-            "<td>" + "<input onchange = \"changeColorOnFieldUpdate("+i+",'isAvailable')\" class='form-check' form='"+i+"' type='checkbox' name='isAvailable' id='isAvailable"+i+"' value='"+
+            "<td>" + "<input onchange = \"changeColorOnFieldUpdate("+i+",'isAvailable')\" class='form-check' form='"+i+"' type='checkbox' name='isAvailable' id='isAvailable"+i+"' checked='"+
             products[i].isAvailable +
             "'/>" +
             "</td>"+
@@ -113,6 +113,9 @@ function changePage(page)
             "</button></td>"
             +"</tr>";
         listing_table.innerHTML += tr;
+        if(!products[i].isAvailable) {
+            document.getElementById("isAvailable"+i).removeAttribute('checked');
+        }
     }
     page_span.innerHTML = page;
 

@@ -43,10 +43,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeHttpRequests()
                 .antMatchers("/","/pictures/**","/catalog","/aboutUs","/js/**",
-                        "/css/**","/search","/sortCatalog","/favicon.ico")
+                        "/css/**","/search","/sortCatalog","/favicon.ico","/prod_pics/**")
                 .permitAll()
                 .antMatchers("/employeeMain","/clientsOrders","/stockRefillOrders","/statistics","/finances",
-                        "/suppliers","/users","/updateProductData","/addProduct")
+                        "/suppliers","/users","/updateProductData","/addProduct","/sortAllProducts","/searchAllProducts")
                 .hasAuthority("EMPLOYEE")
                 .antMatchers("/logout","/changeLogin","/changePassword","/changeEmail","/addToBasket")
                 .hasAnyAuthority("EMPLOYEE","CLIENT")

@@ -18,6 +18,6 @@ public class CustomProductDataValidator implements ProductDataValidator {
                 product.getProductComment().length() >= MIN_NAME_AND_CATEGORY_AND_COMMENT_LENGTH &&
                 product.getProductComment().length() <= MAX_COMMENT_LENGTH &&
                 !(product.getProductPrice().doubleValue() < MIN_PRICE_VALUE) &&
-                (product.getPicturePath().endsWith(".png") || product.getPicturePath().isBlank());
+                (product.getPicturePath().endsWith(".png") || product.getPicturePath().isBlank() || product.getPicturePath().endsWith(".jpg"));
     }
 }

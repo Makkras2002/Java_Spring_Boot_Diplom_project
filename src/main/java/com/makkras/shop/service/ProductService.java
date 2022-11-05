@@ -2,6 +2,7 @@ package com.makkras.shop.service;
 
 import com.makkras.shop.entity.Product;
 import com.makkras.shop.entity.ProductCategory;
+import com.makkras.shop.exception.CustomServiceException;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -15,6 +16,10 @@ public interface ProductService {
     List<Product> getAllAvailableAndInStockProductsAndOrderByCategory();
     List<ProductCategory> getAllProductCategories();
     List<Product> getAllProducts();
-    void createNewPictureForProductInResources(MultipartFile multipartFile);
-    boolean updateProductData(Product updatedProduct);
+    List<Product> getAllProductsAndOrderByPriceAsc();
+    List<Product> getAllProductsAndOrderByPriceDesc();
+    List<Product> getAllProductsAndOrderByName();
+    List<Product> getAllProductsAndOrderByCategory();
+    List<Product> getAllProductsAndOrderByIsAvailable();
+    boolean updateProductData(Product updatedProduct, String productPictureLocationDir, MultipartFile pictureFile) throws CustomServiceException;
 }
