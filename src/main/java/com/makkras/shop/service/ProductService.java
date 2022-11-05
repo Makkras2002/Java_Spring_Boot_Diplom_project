@@ -20,6 +20,7 @@ public interface ProductService {
     List<Product> getAllProductsAndOrderByPriceDesc();
     List<Product> getAllProductsAndOrderByName();
     List<Product> getAllProductsAndOrderByCategory();
-    List<Product> getAllProductsAndOrderByIsAvailable();
+    List<Product> getAllProductsAndOrderByIsAvailableDesc();
+    List<Product> getAllProductsAndOrderByIsAvailableAsc();
     boolean updateProductData(Product updatedProduct, String productPictureLocationDir, MultipartFile pictureFile) throws CustomServiceException;
 }

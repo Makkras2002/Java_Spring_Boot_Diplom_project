@@ -24,6 +24,7 @@ public interface ProductJpaRepository extends JpaRepository<Product,Long> {
     List<Product> findAllByOrderByProductName();
     List<Product> findAllByOrderByCategoryCategory();
     List<Product> findAllByOrderByIsAvailableDesc();
+    List<Product> findAllByOrderByIsAvailableAsc();
 
     @Modifying
     @Transactional

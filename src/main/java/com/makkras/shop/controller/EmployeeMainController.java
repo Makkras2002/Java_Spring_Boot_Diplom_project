@@ -129,8 +129,10 @@ public class EmployeeMainController {
             sortedProductsInGson = gson.toJson(productService.getAllProductsAndOrderByPriceDesc());
         } else if(sortFormSelect.equals("byName")) {
             sortedProductsInGson = gson.toJson(productService.getAllProductsAndOrderByName());
-        } else if(sortFormSelect.equals("byAvailability")) {
-            sortedProductsInGson = gson.toJson(productService.getAllProductsAndOrderByIsAvailable());
+        } else if(sortFormSelect.equals("byAvailabilityDesc")) {
+            sortedProductsInGson = gson.toJson(productService.getAllProductsAndOrderByIsAvailableDesc());
+        } else if(sortFormSelect.equals("byAvailabilityAsc")) {
+            sortedProductsInGson = gson.toJson(productService.getAllProductsAndOrderByIsAvailableAsc());
         } else {
             sortedProductsInGson = gson.toJson(productService.getAllProductsAndOrderByCategory());
         }

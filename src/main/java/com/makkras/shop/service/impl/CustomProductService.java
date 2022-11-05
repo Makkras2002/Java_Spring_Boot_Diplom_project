@@ -98,8 +98,13 @@ public class CustomProductService implements ProductService {
     }
 
     @Override
-    public List<Product> getAllProductsAndOrderByIsAvailable() {
+    public List<Product> getAllProductsAndOrderByIsAvailableDesc() {
         return productJpaRepository.findAllByOrderByIsAvailableDesc();
+    }
+
+    @Override
+    public List<Product> getAllProductsAndOrderByIsAvailableAsc() {
+        return productJpaRepository.findAllByOrderByIsAvailableAsc();
     }
 
     public boolean updateProductData(Product updatedProduct, String productPictureLocationDir, MultipartFile pictureFile) throws CustomServiceException {
