@@ -81,6 +81,9 @@
         <th:block sec:authorize="hasAuthority('EMPLOYEE')">
             <li><a th:href="@{/employeeMain}" class="nav-link px-2 link-dark" style="color: purple; font-weight: bolder; font-style: italic">Для сотрудников</a></li>
         </th:block>
+        <th:block sec:authorize="hasAnyAuthority('EMPLOYEE','CLIENT')">
+            <li><a th:href="@{/showBasket}"><img th:src="@{pictures/basketImg.png}" alt="basketImg" style="width: 50px; height: 50px"></a></li>
+        </th:block>
     </ul>
     <div class="col-md-3 text-end mx-5">
         <th:block sec:authorize="!isAuthenticated()"><a th:href="@{/login}" type="button" class="btn btn-outline-primary me-2">Войти</a></th:block>

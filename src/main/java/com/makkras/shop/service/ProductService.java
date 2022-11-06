@@ -23,4 +23,5 @@ public interface ProductService {
     List<Product> getAllProductsAndOrderByIsAvailableDesc();
     List<Product> getAllProductsAndOrderByIsAvailableAsc();
     boolean updateProductData(Product updatedProduct, String productPictureLocationDir, MultipartFile pictureFile) throws CustomServiceException;
+    Product getProductById(Long productId) throws CustomServiceException;
 }

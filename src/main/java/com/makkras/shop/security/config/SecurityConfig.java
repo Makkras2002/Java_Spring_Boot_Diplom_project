@@ -48,7 +48,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/employeeMain","/clientsOrders","/stockRefillOrders","/statistics","/finances",
                         "/suppliers","/users","/updateProductData","/addProduct","/sortAllProducts","/searchAllProducts")
                 .hasAuthority("EMPLOYEE")
-                .antMatchers("/logout","/changeLogin","/changePassword","/changeEmail","/addToBasket")
+                .antMatchers("/logout","/changeLogin","/changePassword","/changeEmail","/addToBasket",
+                        "/showBasket","/alterOrder","/orderProducts")
                 .hasAnyAuthority("EMPLOYEE","CLIENT")
                 .antMatchers("/register","/regconfirm")
                 .hasAuthority("GUEST")

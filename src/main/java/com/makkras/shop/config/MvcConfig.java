@@ -9,11 +9,10 @@ import java.nio.file.Paths;
 
 @Configuration
 public class MvcConfig implements WebMvcConfigurer {
-
-
+    private static final String PRODUCT_PICTURES_DIRECTORY = "prod_pics";
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        exposeDirectory("prod_pics", registry);
+        exposeDirectory(PRODUCT_PICTURES_DIRECTORY, registry);
     }
 
     private void exposeDirectory(String dirName, ResourceHandlerRegistry registry) {

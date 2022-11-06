@@ -39,6 +39,38 @@ public class ComponentClientsOrder extends CustomEntity {
         this.orderedProductFullPrice = orderedProductFullPrice;
     }
 
+    public Long getComponentClientsOrderId() {
+        return componentClientsOrderId;
+    }
+
+    public void setComponentClientsOrderId(Long componentClientsOrderId) {
+        this.componentClientsOrderId = componentClientsOrderId;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    public Long getOrderedProductAmount() {
+        return orderedProductAmount;
+    }
+
+    public void setOrderedProductAmount(Long orderedProductAmount) {
+        this.orderedProductAmount = orderedProductAmount;
+    }
+
+    public BigDecimal getOrderedProductFullPrice() {
+        return orderedProductFullPrice;
+    }
+
+    public void setOrderedProductFullPrice(BigDecimal orderedProductFullPrice) {
+        this.orderedProductFullPrice = orderedProductFullPrice;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

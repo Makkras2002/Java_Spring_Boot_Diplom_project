@@ -7,6 +7,8 @@ import com.makkras.shop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class CustomUserService implements UserService {
     private final UserJpaRepository userJpaRepository;
@@ -52,5 +54,9 @@ public class CustomUserService implements UserService {
         if(userJpaRepository.updateUserPassword(newPassword, login) !=1) {
             throw new CustomServiceException("Error occurred during password update!");
         }
+    }
+
+    public Optional<User> findActiveUserByLogin(String login) {
+        return userJpaRepository.findByLoginAndIsActive(login,true);
     }
 }

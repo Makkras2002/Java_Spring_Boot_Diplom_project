@@ -1,0 +1,33 @@
+<div class="modal fade" id="clientOrderModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="clientOrderModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="clientOrderModalLabel">Завершение оформления заказа</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body justify-content-center">
+                <p class="border-bottom border-secondary" style="color: red; font-size: small">Доставка осуществляется только по г.Минску.</p>
+                <p class="border-bottom border-secondary" style="color: red; font-size: small"> Стоимость доставки при общей сумме заказа менее 30 BYN -> 10 BYN.</p>
+                <p class="border-bottom border-secondary" style="color: red; font-size: small"> Стоимость доставки при общей сумме заказа 30 BYN и более -> 5 BYN.</p>
+                <ul class="mt-5">
+                    <li style="color: green; font-weight: bolder" th:text="'Текущая суммарная стоимость заказа - '+${totalSum}+ ' BYN'"></li>
+                </ul>
+                <form th:action="@{/orderProducts}"  method="post" id="orderForm">
+                    <input type="hidden" name="totalPrice" id="totalPrice" th:value="${totalSum}"/>
+                    <label for="needDelivery" class="form-label"></label>
+                    <div class="form-check form-switch border-bottom">
+                        <label class="form-check-label" for="needDelivery">Необходима ли доставка</label>
+                        <input class="form-check-input" type="checkbox" role="switch" name="needDelivery" id="needDelivery" checked>
+                    </div>
+                    <label for="deliveryAddress" class="form-label">Введите адрес доставки</label>
+                    <br/>
+                    <textarea id="deliveryAddress" minlength="5" maxlength="100" name="deliveryAddress" placeholder="Адрес доставки..."></textarea>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" form="orderForm" class="btn btn-outline-primary">Заказать продукты</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>

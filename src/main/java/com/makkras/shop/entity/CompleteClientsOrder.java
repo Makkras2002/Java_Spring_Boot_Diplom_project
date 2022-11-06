@@ -1,6 +1,7 @@
 package com.makkras.shop.entity;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -28,24 +29,29 @@ public class CompleteClientsOrder extends CustomEntity {
     @Column(name = "delivery_address")
     private String deliveryAddress;
 
+    @Column(name = "delivery_price")
+    private BigDecimal deliveryPrice;
+
     public CompleteClientsOrder() {
     }
 
-    public CompleteClientsOrder(User user, boolean isCompleted, LocalDate completeClientsOrderDate, List<ComponentClientsOrder> clientsComponentOrders, String deliveryAddress) {
+    public CompleteClientsOrder(User user, boolean isCompleted, LocalDate completeClientsOrderDate, List<ComponentClientsOrder> clientsComponentOrders, String deliveryAddress, BigDecimal deliveryPrice) {
         this.user = user;
         this.isCompleted = isCompleted;
         this.completeClientsOrderDate = completeClientsOrderDate;
         this.clientsComponentOrders = clientsComponentOrders;
         this.deliveryAddress = deliveryAddress;
+        this.deliveryPrice = deliveryPrice;
     }
 
-    public CompleteClientsOrder(Long completeClientsOrderId, User user, boolean isCompleted, LocalDate completeClientsOrderDate, List<ComponentClientsOrder> clientsComponentOrders, String deliveryAddress) {
+    public CompleteClientsOrder(Long completeClientsOrderId, User user, boolean isCompleted, LocalDate completeClientsOrderDate, List<ComponentClientsOrder> clientsComponentOrders, String deliveryAddress, BigDecimal deliveryPrice) {
         this.completeClientsOrderId = completeClientsOrderId;
         this.user = user;
         this.isCompleted = isCompleted;
         this.completeClientsOrderDate = completeClientsOrderDate;
         this.clientsComponentOrders = clientsComponentOrders;
         this.deliveryAddress = deliveryAddress;
+        this.deliveryPrice = deliveryPrice;
     }
 
     public Long getCompleteClientsOrderId() {
@@ -96,6 +102,14 @@ public class CompleteClientsOrder extends CustomEntity {
         this.deliveryAddress = deliveryAddress;
     }
 
+    public BigDecimal getDeliveryPrice() {
+        return deliveryPrice;
+    }
+
+    public void setDeliveryPrice(BigDecimal deliveryPrice) {
+        this.deliveryPrice = deliveryPrice;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -111,7 +125,9 @@ public class CompleteClientsOrder extends CustomEntity {
             return false;
         if (clientsComponentOrders != null ? !clientsComponentOrders.equals(that.clientsComponentOrders) : that.clientsComponentOrders != null)
             return false;
-        return deliveryAddress != null ? deliveryAddress.equals(that.deliveryAddress) : that.deliveryAddress == null;
+        if (deliveryAddress != null ? !deliveryAddress.equals(that.deliveryAddress) : that.deliveryAddress != null)
+            return false;
+        return deliveryPrice != null ? deliveryPrice.equals(that.deliveryPrice) : that.deliveryPrice == null;
     }
 
     @Override
@@ -122,6 +138,7 @@ public class CompleteClientsOrder extends CustomEntity {
         result = 31 * result + (completeClientsOrderDate != null ? completeClientsOrderDate.hashCode() : 0);
         result = 31 * result + (clientsComponentOrders != null ? clientsComponentOrders.hashCode() : 0);
         result = 31 * result + (deliveryAddress != null ? deliveryAddress.hashCode() : 0);
+        result = 31 * result + (deliveryPrice != null ? deliveryPrice.hashCode() : 0);
         return result;
     }
 
@@ -134,6 +151,7 @@ public class CompleteClientsOrder extends CustomEntity {
         sb.append(", completeClientsOrderDate=").append(completeClientsOrderDate);
         sb.append(", clientsComponentOrders=").append(clientsComponentOrders);
         sb.append(", deliveryAddress='").append(deliveryAddress).append('\'');
+        sb.append(", deliveryPrice=").append(deliveryPrice);
         sb.append('}');
         return sb.toString();
     }

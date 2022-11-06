@@ -168,7 +168,7 @@ public class UserController {
     }
 
     @PostMapping("/changePassword")
-    public String changeEmail(Model model,@RequestParam String oldPassword, @RequestParam String newPassword,
+    public String changePassword(Model model,@RequestParam String oldPassword, @RequestParam String newPassword,
                               @RequestParam String newPasswordRepeated, Authentication authentication,
                               RedirectAttributes redirectAttributes) {
         SecurityUser securityUser = (SecurityUser) authentication.getPrincipal();

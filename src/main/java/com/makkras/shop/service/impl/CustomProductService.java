@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -152,6 +153,15 @@ public class CustomProductService implements ProductService {
         } else {
             return false;
         }
+    }
+
+    public Product getProductById(Long productId) throws CustomServiceException {
+        try {
+            return productJpaRepository.findById(productId).orElseThrow();
+        } catch (NoSuchElementException exception) {
+            throw new CustomServiceException(exception.getMessage());
+        }
+
     }
 
 }
