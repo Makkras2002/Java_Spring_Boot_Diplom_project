@@ -60,4 +60,9 @@ public interface ProductJpaRepository extends JpaRepository<Product,Long> {
     @Transactional
     @Query(value = "UPDATE Products SET product_category_id=? WHERE product_id=?", nativeQuery = true)
     void updateProductCategory(Long productCategoryId, Long productId);
+
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE Products SET amount_in_stock=? WHERE product_id=?", nativeQuery = true)
+    void updateProductAmount(Long newAmountInStock, Long productId);
 }

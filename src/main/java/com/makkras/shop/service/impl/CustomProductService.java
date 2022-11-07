@@ -155,6 +155,10 @@ public class CustomProductService implements ProductService {
         }
     }
 
+    public void updateProductAmountInStock(Long changeInAmount, Product product) {
+        productJpaRepository.updateProductAmount(product.getAmountInStock()+changeInAmount,product.getProductId());
+    }
+
     public Product getProductById(Long productId) throws CustomServiceException {
         try {
             return productJpaRepository.findById(productId).orElseThrow();

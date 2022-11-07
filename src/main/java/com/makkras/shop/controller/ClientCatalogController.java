@@ -14,6 +14,8 @@ import com.makkras.shop.service.impl.CustomClientOrderService;
 import com.makkras.shop.service.impl.CustomMailService;
 import com.makkras.shop.service.impl.CustomProductService;
 import com.makkras.shop.util.ProductFilterUtil;
+import com.makkras.shop.validator.ClientsOrderValidator;
+import com.makkras.shop.validator.impl.CustomClientsOrderValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,28 +46,30 @@ public class ClientCatalogController {
     private static final String COMPONENT_ORDERS_LIST = "orders";
     private static final String EMPTY_ORDER_ERROR = "Ваш заказ пуст!";
     private static final String ORDER_ALTER_ERROR = "Возникла ошибка при изменении заказа!";
+    private static final String ORDER_INVALID_PRODUCT_ERROR = "Ошибка при совершении заказа! Вы пытались заказать неверное количество или вид товара!";
     private static final String UNKNOWN_USER_ERROR = "Неизвестный пользователь!";
     private static final String NO_DELIVERY_ADDRESS = "None";
     private static final Logger logger = LogManager.getLogger();
     private final ProductService productService;
     private final UserService userService;
     private final ClientOrderService clientOrderService;
-    private final MailService mailService;
     private final ProductFilterUtil productFilterUtil;
-    private final PasswordEncoder passwordEncoder;
+    private final ClientsOrderValidator clientsOrderValidator;
     private final Gson gson;
 
     @Autowired
     public ClientCatalogController(CustomProductService productService,
                                    UserService userService,
-                                   CustomClientOrderService clientOrderService, CustomMailService mailService, ProductFilterUtil productFilterUtil) {
+                                   CustomClientOrderService clientOrderService,
+                                   CustomMailService mailService,
+                                   ProductFilterUtil productFilterUtil,
+                                   CustomClientsOrderValidator clientsOrderValidator) {
         this.productService = productService;
         this.userService = userService;
         this.clientOrderService = clientOrderService;
-        this.mailService = mailService;
         this.productFilterUtil = productFilterUtil;
+        this.clientsOrderValidator =clientsOrderValidator;
         this.gson = new Gson();
-        this.passwordEncoder = new BCryptPasswordEncoder(12);
     }
 
     @GetMapping("/catalog")
@@ -208,11 +212,12 @@ public class ClientCatalogController {
             if(componentClientsOrdersList != null && componentClientsOrdersList.size()!=0) {
                 deliveryAddress = needDelivery.isEmpty()?Optional.empty():deliveryAddress;
                 BigDecimal deliveryPrice = deliveryAddress.isEmpty()?BigDecimal.ZERO: totalPrice.compareTo(BigDecimal.valueOf(30))>=0?BigDecimal.valueOf(5):BigDecimal.valueOf(10);
-                clientOrderService.addClientsOrder(componentClientsOrdersList,user.get(),deliveryAddress.orElse(NO_DELIVERY_ADDRESS),deliveryPrice);
-                try {
-                    mailService.sendSuccessfulClientOrderEmail(user.get(),deliveryAddress);
-                } catch (MessagingException | UnsupportedEncodingException e) {
-                    logger.error(e.getMessage());
+                if(clientsOrderValidator.validateClientOrder(componentClientsOrdersList)) {
+                    clientOrderService.addClientOrder(componentClientsOrdersList,user.get(),deliveryAddress.orElse(NO_DELIVERY_ADDRESS),deliveryPrice);
+                } else {
+                    redirectAttributes.addFlashAttribute("error",ORDER_INVALID_PRODUCT_ERROR);
+                    session.removeAttribute(COMPONENT_ORDERS_LIST);
+                    return "redirect:/";
                 }
                 session.removeAttribute(COMPONENT_ORDERS_LIST);
                 return "redirect:/catalog";

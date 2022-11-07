@@ -46,7 +46,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/css/**","/search","/sortCatalog","/favicon.ico","/prod_pics/**")
                 .permitAll()
                 .antMatchers("/employeeMain","/clientsOrders","/stockRefillOrders","/statistics","/finances",
-                        "/suppliers","/users","/updateProductData","/addProduct","/sortAllProducts","/searchAllProducts")
+                        "/suppliers","/users","/updateProductData","/addProduct","/sortAllProducts",
+                        "/searchAllProducts","/clientsOrders","/confirmClOrder","/filterClOrders")
                 .hasAuthority("EMPLOYEE")
                 .antMatchers("/logout","/changeLogin","/changePassword","/changeEmail","/addToBasket",
                         "/showBasket","/alterOrder","/orderProducts")
