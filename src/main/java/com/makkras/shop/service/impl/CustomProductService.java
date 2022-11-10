@@ -108,6 +108,7 @@ public class CustomProductService implements ProductService {
         return productJpaRepository.findAllByOrderByIsAvailableAsc();
     }
 
+    @Override
     public boolean updateProductData(Product updatedProduct, String productPictureLocationDir, MultipartFile pictureFile) throws CustomServiceException {
         Long productForUpdateId = updatedProduct.getProductId();
         Optional<Product> oldProductOptional = productJpaRepository.findById(productForUpdateId);
@@ -155,10 +156,12 @@ public class CustomProductService implements ProductService {
         }
     }
 
+    @Override
     public void updateProductAmountInStock(Long changeInAmount, Product product) {
         productJpaRepository.updateProductAmount(product.getAmountInStock()+changeInAmount,product.getProductId());
     }
 
+    @Override
     public Product getProductById(Long productId) throws CustomServiceException {
         try {
             return productJpaRepository.findById(productId).orElseThrow();

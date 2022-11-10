@@ -56,6 +56,7 @@ public class CustomUserService implements UserService {
         }
     }
 
+    @Override
     public Optional<User> findActiveUserByLogin(String login) {
         return userJpaRepository.findByLoginAndIsActive(login,true);
     }

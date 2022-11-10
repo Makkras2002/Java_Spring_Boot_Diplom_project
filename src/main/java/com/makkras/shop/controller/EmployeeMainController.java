@@ -105,7 +105,7 @@ public class EmployeeMainController {
         if(productDataValidator.validateProductData(productToUpdate)) {
             try {
                 if(!productService.updateProductData(productToUpdate,PRODUCT_PICTURES_LOCATION_DIR,picture)) {
-                    redirectAttributes.addFlashAttribute("error","Произошла ошибка! Данные не были обновлены");
+                    redirectAttributes.addFlashAttribute("error","Произошла ошибка! Данные не были обновлены!");
                 }
             } catch (CustomServiceException exception) {
                 logger.error(exception.getMessage());
@@ -143,7 +143,7 @@ public class EmployeeMainController {
     }
 
     @PostMapping("/searchAllProducts")
-    public String searchAndFilterInCatalog(Model model,
+    public String searchAndFilterInEmployeeMain(Model model,
                                            @RequestParam(required = false) String name,
                                            @RequestParam(required = false) String category,
                                            @RequestParam(required = false) BigDecimal minPrice,

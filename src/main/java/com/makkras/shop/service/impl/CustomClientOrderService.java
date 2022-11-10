@@ -23,18 +23,22 @@ public class CustomClientOrderService implements ClientOrderService {
         this.clientOrderJpaRepository = clientOrderJpaRepository;
     }
 
+    @Override
     public void addClientOrder(List<ComponentClientsOrder> componentClientsOrdersList,
                                User user, String deliveryAddress, BigDecimal deliveryPrice) {
         clientOrderJpaRepository.save(new CompleteClientsOrder(user,false, LocalDate.now(),componentClientsOrdersList,deliveryAddress,deliveryPrice));
     }
 
+    @Override
     public List<CompleteClientsOrder> getAllClientOrders() {
         return clientOrderJpaRepository.findAll();
     }
+    @Override
     public void updateClientOrderStatus(boolean newStatus, Long orderId) {
         clientOrderJpaRepository.updateClientOrderStatus(newStatus,orderId);
     }
 
+    @Override
     public CompleteClientsOrder getClientOrderById(Long orderId) throws CustomServiceException {
         try {
             return clientOrderJpaRepository.findById(orderId).orElseThrow();
@@ -43,10 +47,27 @@ public class CustomClientOrderService implements ClientOrderService {
         }
     }
 
+    @Override
     public List<CompleteClientsOrder> getAllCompletedClientsOrders() {
         return clientOrderJpaRepository.findAllByIsCompleted(true);
     }
+    @Override
     public List<CompleteClientsOrder> getAllUncompletedClientsOrders() {
         return clientOrderJpaRepository.findAllByIsCompleted(false);
+    }
+
+    @Override
+    public List<CompleteClientsOrder> getAllClientsOrdersAndOrderByDateDesc() {
+        return clientOrderJpaRepository.findAllByOrderByCompleteClientsOrderDateDesc();
+    }
+
+    @Override
+    public List<CompleteClientsOrder> getAllClientsOrdersAndOrderByDateAsc() {
+        return clientOrderJpaRepository.findAllByOrderByCompleteClientsOrderDateAsc();
+    }
+
+    @Override
+    public List<CompleteClientsOrder> getAllFilteredClientsOrders(String loginOrEmail, String deliveryAddress, LocalDate startDate, LocalDate endDate) {
+        return clientOrderJpaRepository.findAllByUser_LoginLikeOrUser_EmailLikeAndDeliveryAddressLikeAndCompleteClientsOrderDateIsBetween(loginOrEmail,loginOrEmail,deliveryAddress,startDate,endDate);
     }
 }

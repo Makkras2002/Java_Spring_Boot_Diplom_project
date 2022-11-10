@@ -15,6 +15,7 @@ import com.makkras.shop.service.impl.CustomProductService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,13 +26,20 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 public class EmployeeClientsOrdersController {
+    private static final String NONE_ORDERS_FOUND_SEARCH_ERROR = "Заказы, соответствующие параметрам поиска, не были найдены!";
     private static final String CL_ORDER_ALREADY_COMPLETED_ERROR = "Этот заказ уже подтверждён!";
     private static final String CL_ORDER_COMPLETION_ERROR = "Произошла ошибка во время подтверждения заказа!";
     private static final String FILTER_TYPE_NOT_SELECTED = "Способ фильтрации не был выбран!";
+    private static final String ONLY_COMPLETED_ORDERS = "onlyCompleted";
+    private static final String ONLY_UNCOMPLETED_ORDERS = "onlyUncompleted";
     private static final Logger logger = LogManager.getLogger();
     private final ClientOrderService clientOrderService;
     private final ProductService productService;
@@ -99,10 +107,40 @@ public class EmployeeClientsOrdersController {
             filteredClientsOrdersInGson = gson.toJson(clientOrderService.getAllCompletedClientsOrders());
         } else if(filterFormSelect.equals("showUncompleted")) {
             filteredClientsOrdersInGson = gson.toJson(clientOrderService.getAllUncompletedClientsOrders());
-        } else {
+        } else if(filterFormSelect.equals("orderByDateDesc")) {
+            filteredClientsOrdersInGson = gson.toJson(clientOrderService.getAllClientsOrdersAndOrderByDateDesc());
+        }else if(filterFormSelect.equals("orderByDateAsc")) {
+            filteredClientsOrdersInGson = gson.toJson(clientOrderService.getAllClientsOrdersAndOrderByDateAsc());
+        }else {
             filteredClientsOrdersInGson = gson.toJson(clientOrderService.getAllClientOrders());
         }
         model.addAttribute("clientsOrders",filteredClientsOrdersInGson);
+        return "clientsOrdersControlPage";
+    }
+
+    @PostMapping("/searchClOrders")
+    public String searchClientsOrders(Model model,
+                                      @RequestParam(required = false) String name,
+                                      @RequestParam(required = false) String deliveryAddress,
+                                      @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+                                      @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+                                      @RequestParam String completionStatus) {
+        if(startDate==null) {
+            startDate = LocalDate.of(2000,1,1);
+        }
+        if(endDate == null) {
+            endDate = LocalDate.now();
+        }
+        List<CompleteClientsOrder> filteredClientsOrders = clientOrderService.getAllFilteredClientsOrders("%"+name+"%","%"+deliveryAddress+"%",startDate,endDate);
+        if(completionStatus.equals(ONLY_COMPLETED_ORDERS)) {
+            filteredClientsOrders = filteredClientsOrders.stream().filter(CompleteClientsOrder::isCompleted).collect(Collectors.toList());
+        } else if(completionStatus.equals(ONLY_UNCOMPLETED_ORDERS)) {
+            filteredClientsOrders = filteredClientsOrders.stream().filter(order -> !order.isCompleted()).collect(Collectors.toList());
+        }
+        if(filteredClientsOrders.size() == 0) {
+            model.addAttribute("error",NONE_ORDERS_FOUND_SEARCH_ERROR);
+        }
+        model.addAttribute("clientsOrders",gson.toJson(filteredClientsOrders));
         return "clientsOrdersControlPage";
     }
 }

@@ -24,6 +24,7 @@ public class CustomClientsOrderValidator implements ClientsOrderValidator {
         this.productService = productService;
     }
 
+    @Override
     public boolean validateClientOrder(List<ComponentClientsOrder> componentClientsOrdersList) {
         try {
             for(ComponentClientsOrder componentClientsOrder : componentClientsOrdersList) {

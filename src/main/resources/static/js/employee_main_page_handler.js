@@ -210,14 +210,6 @@ function changeColorOnFieldUpdate(formNumber,paramName) {
     }
 
 }
-function removeCheckedIfFalse(formNumber) {
-    let element = document.getElementById("isAvailable"+formNumber).value;
-    alert(element);
-    if(element === false) {
-        document.getElementById("isAvailable"+formNumber).removeAttribute('checked');
-    }
-
-}
 function checkIfDataWasUpdated(event,formNumber) {
     if(document.getElementById(formNumber).classList.length===0) {
         event.preventDefault();

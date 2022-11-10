@@ -1,0 +1,35 @@
+<div class="modal fade" id="searchClOrdersModal" tabindex="-1" aria-labelledby="searchClOrdersModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="searchClOrdersModalLabel">Поиск</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p style="color: darkorange; font-weight: bolder">Заполните поля необходимые для Поиска:</p>
+                <form th:action="@{/searchClOrders}" method="post" id="searchClOrdersForm">
+                    <label for="name" class="form-label">Введите имя или email пользователя, совершившего заказ</label>
+                    <input class="form-control" type="text" id="name" minlength="3" maxlength="100" name="name" placeholder="Имя или email пользователя, совершившего заказ"/>
+                    <label for="deliveryAddress" class="form-label">Введите адрес доставки</label>
+                    <input class="form-control mb-2" type="text" id="deliveryAddress" minlength="3" maxlength="100" name="deliveryAddress" placeholder="Адрес доставки"/>
+                    <label for="startDate" class="form-label">Введите крайнюю раннюю дату заказа</label>
+                    <input type="date" class="form-control" id="startDate" name="startDate"/>
+                    <label for="endDate" class="form-label">Введите крайнюю позднюю дату</label>
+                    <input type="date" class="form-control" id="endDate" name="endDate"/>
+                    <input class="form-check-input mt-2" type="radio" value="onlyCompleted" name="completionStatus" id="completionStatus1">
+                    <label for="completionStatus1" class="form-label">Только завершённые заказы</label>
+                    <br/>
+                    <input class="form-check-input" type="radio" value="onlyUncompleted" name="completionStatus" id="completionStatus2">
+                    <label for="completionStatus2" class="form-label">Только незавершённые заказы</label>
+                    <br/>
+                    <input class="form-check-input" checked type="radio" value="all" name="completionStatus" id="completionStatus3">
+                    <label for="completionStatus3" class="form-label">Все заказы</label>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" form="searchClOrdersForm" class="btn btn-outline-primary">Поиск</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>

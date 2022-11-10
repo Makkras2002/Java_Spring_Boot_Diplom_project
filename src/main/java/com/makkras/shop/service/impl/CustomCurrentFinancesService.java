@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Service
 public class CustomCurrentFinancesService implements CurrentFinancesService {
@@ -21,6 +20,7 @@ public class CustomCurrentFinancesService implements CurrentFinancesService {
         this.financesJpaRepository = financesJpaRepository;
     }
 
+    @Override
     public void updateCurrentFinances(BigDecimal changeInFinances) throws CustomServiceException {
         try {
             CurrentFinances oldFinances = financesJpaRepository.findById(CURRENT_FINANCES_ID).orElseThrow();

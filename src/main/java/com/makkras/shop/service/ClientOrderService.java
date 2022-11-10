@@ -6,6 +6,7 @@ import com.makkras.shop.entity.User;
 import com.makkras.shop.exception.CustomServiceException;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 public interface ClientOrderService {
@@ -16,4 +17,7 @@ public interface ClientOrderService {
     CompleteClientsOrder getClientOrderById(Long orderId) throws CustomServiceException;
     List<CompleteClientsOrder> getAllCompletedClientsOrders();
     List<CompleteClientsOrder> getAllUncompletedClientsOrders();
+    List<CompleteClientsOrder> getAllClientsOrdersAndOrderByDateDesc();
+    List<CompleteClientsOrder> getAllClientsOrdersAndOrderByDateAsc();
+    List<CompleteClientsOrder> getAllFilteredClientsOrders(String loginOrEmail, String deliveryAddress, LocalDate startDate, LocalDate endDate);
 }

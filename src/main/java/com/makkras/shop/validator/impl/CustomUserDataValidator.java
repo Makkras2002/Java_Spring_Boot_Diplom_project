@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 
 @Service
 public class CustomUserDataValidator implements UserDataValidator {
-    private static final String EMAIL_REGEX = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
+    public static final String EMAIL_REGEX = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
     private static final String INVALID_DATA_ENTERED_ERROR = "Введены неверные данные!";
     private static final int MIN_LOGIN_LENGTH = 3;
     private static final int MAX_LOGIN_LENGTH = 100;

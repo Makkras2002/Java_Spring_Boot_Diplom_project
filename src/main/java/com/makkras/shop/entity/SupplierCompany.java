@@ -15,22 +15,32 @@ public class SupplierCompany extends CustomEntity {
     @Column(name = "supplier_company_email")
     private String supplierCompanyEmail;
 
+    @Column(name = "tel_number")
+    private String telNumber;
+
+    @Column(name = "location")
+    private String location;
+
     @Column(name = "is_active")
     private boolean isActive;
 
     public SupplierCompany() {
     }
 
-    public SupplierCompany(String supplierCompanyName, String supplierCompanyEmail, boolean isActive) {
+    public SupplierCompany(String supplierCompanyName, String supplierCompanyEmail, String telNumber, String location, boolean isActive) {
         this.supplierCompanyName = supplierCompanyName;
         this.supplierCompanyEmail = supplierCompanyEmail;
+        this.telNumber = telNumber;
+        this.location = location;
         this.isActive = isActive;
     }
 
-    public SupplierCompany(Long supplierCompanyId, String supplierCompanyName, String supplierCompanyEmail, boolean isActive) {
+    public SupplierCompany(Long supplierCompanyId, String supplierCompanyName, String supplierCompanyEmail, String telNumber, String location, boolean isActive) {
         this.supplierCompanyId = supplierCompanyId;
         this.supplierCompanyName = supplierCompanyName;
         this.supplierCompanyEmail = supplierCompanyEmail;
+        this.telNumber = telNumber;
+        this.location = location;
         this.isActive = isActive;
     }
 
@@ -58,6 +68,22 @@ public class SupplierCompany extends CustomEntity {
         this.supplierCompanyEmail = supplierCompanyEmail;
     }
 
+    public String getTelNumber() {
+        return telNumber;
+    }
+
+    public void setTelNumber(String telNumber) {
+        this.telNumber = telNumber;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
     public boolean isActive() {
         return isActive;
     }
@@ -78,7 +104,10 @@ public class SupplierCompany extends CustomEntity {
             return false;
         if (supplierCompanyName != null ? !supplierCompanyName.equals(that.supplierCompanyName) : that.supplierCompanyName != null)
             return false;
-        return supplierCompanyEmail != null ? supplierCompanyEmail.equals(that.supplierCompanyEmail) : that.supplierCompanyEmail == null;
+        if (supplierCompanyEmail != null ? !supplierCompanyEmail.equals(that.supplierCompanyEmail) : that.supplierCompanyEmail != null)
+            return false;
+        if (telNumber != null ? !telNumber.equals(that.telNumber) : that.telNumber != null) return false;
+        return location != null ? location.equals(that.location) : that.location == null;
     }
 
     @Override
@@ -86,6 +115,8 @@ public class SupplierCompany extends CustomEntity {
         int result = supplierCompanyId != null ? supplierCompanyId.hashCode() : 0;
         result = 31 * result + (supplierCompanyName != null ? supplierCompanyName.hashCode() : 0);
         result = 31 * result + (supplierCompanyEmail != null ? supplierCompanyEmail.hashCode() : 0);
+        result = 31 * result + (telNumber != null ? telNumber.hashCode() : 0);
+        result = 31 * result + (location != null ? location.hashCode() : 0);
         result = 31 * result + (isActive ? 1 : 0);
         return result;
     }
@@ -96,6 +127,8 @@ public class SupplierCompany extends CustomEntity {
         sb.append("supplierCompanyId=").append(supplierCompanyId);
         sb.append(", supplierCompanyName='").append(supplierCompanyName).append('\'');
         sb.append(", supplierCompanyEmail='").append(supplierCompanyEmail).append('\'');
+        sb.append(", telNumber='").append(telNumber).append('\'');
+        sb.append(", location='").append(location).append('\'');
         sb.append(", isActive=").append(isActive);
         sb.append('}');
         return sb.toString();

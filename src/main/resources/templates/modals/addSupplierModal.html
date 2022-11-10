@@ -1,0 +1,28 @@
+<div class="modal fade" id="addSupplierModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addSupplierModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="addSupplierModalLabel">Добавление нового поставщика</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body justify-content-center">
+                <form th:action="@{/addSupplier}" method="post" id="addSupplierForm">
+                    <label for="name" class="form-label">Введите название поставщика</label>
+                    <input class="form-control mb-2" type="text" id="name" minlength="3" maxlength="100" name="name" placeholder="Название постащика" required="required"/>
+                    <label for="email" class="form-label">Введите email поставщика</label>
+                    <input class="form-control mb-2" type="email" id="email" minlength="3" maxlength="100" name="email" placeholder="Email постащика" required="required"/>
+                    <label for="telNumber" class="form-label">Введите контактный телефон поставщика</label>
+                    <input class="form-control mb-2" type="tel" id="telNumber" minlength="3" maxlength="20" name="telNumber" placeholder="Контактный телефон постащика" required="required"/>
+                    <label for="location" class="form-label">Введите местоположение поставщика</label>
+                    <input class="form-control mb-2" type="text" id="location" minlength="3" maxlength="100" name="location" placeholder="<Старана>, г.<Город>" required="required"/>
+                    <label for="isActive" class="form-label mt-2">Активен ли в данный момент поставщик</label>
+                    <input type="checkbox" class="form-check form-switch" name="isActive" id="isActive"/>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" form="addSupplierForm" class="btn btn-outline-primary">Добавить поставщика</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>
