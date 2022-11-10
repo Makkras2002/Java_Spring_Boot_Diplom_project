@@ -28,7 +28,7 @@ public class CustomMailService implements MailService {
     private static final String SUCCESSFUL_CLIENT_ORDER_EMAIL_MESSAGE_CONTENT = """
             
             Дорогой [[name]],<br>
-            Вы успешно осуществили заказ продуктов в магазине DestFood!<br>
+            Вы успешно осуществили заказ продуктов в магазине BestFood!<br>
             Ваш адрес доставки - [[DELIVERY]]<br>
             Мы Вам благодарны,<br>
             ООО \"BestFood\".""";
