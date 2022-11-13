@@ -42,7 +42,7 @@ public class ClientCatalogController {
     private static final String EMPTY_ORDER_ERROR = "Ваш заказ пуст!";
     private static final String ORDER_ALTER_ERROR = "Возникла ошибка при изменении заказа!";
     private static final String ORDER_INVALID_PRODUCT_ERROR = "Ошибка при совершении заказа! Вы пытались заказать неверное количество или вид товара!";
-    private static final String UNKNOWN_USER_ERROR = "Неизвестный пользователь!";
+    public static final String UNKNOWN_USER_ERROR = "Неизвестный пользователь!";
     private static final String NO_DELIVERY_ADDRESS = "None";
     private static final Logger logger = LogManager.getLogger();
     private final ProductService productService;

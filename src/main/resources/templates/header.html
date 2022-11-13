@@ -86,8 +86,8 @@
         </th:block>
     </ul>
     <div class="col-md-3 text-end mx-5">
-        <th:block sec:authorize="!isAuthenticated()"><a th:href="@{/login}" type="button" class="btn btn-outline-primary me-2">Войти</a></th:block>
-        <th:block sec:authorize="isAuthenticated()"><a th:href="@{/logout}" type="button" class="btn btn-outline-primary me-2">Выйти</a></th:block>
-        <th:block sec:authorize="!isAuthenticated()"><a th:href="@{/register}" type="button" class="btn btn-info me-2">Зарегистрироваться</a></th:block>
+        <th:block sec:authorize="!isAuthenticated()"><a th:href="@{/login}" type="button" class="btn btn-outline-primary me-2"><i class="fa fa-sign-in"></i>| Войти</a></th:block>
+        <th:block sec:authorize="isAuthenticated()"><a th:href="@{/logout}" type="button" class="btn btn-outline-primary me-2"><i class="fa fa-sign-out"></i>| Выйти</a></th:block>
+        <th:block sec:authorize="!isAuthenticated()"><a th:href="@{/register}" type="button" class="btn btn-info me-2"><i class="fa fa-registered"></i>| Зарегистрироваться</a></th:block>
     </div>
 </div>

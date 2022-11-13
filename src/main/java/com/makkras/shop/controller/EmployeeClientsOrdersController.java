@@ -27,7 +27,6 @@ import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -36,7 +35,7 @@ import java.util.stream.Collectors;
 public class EmployeeClientsOrdersController {
     private static final String NONE_ORDERS_FOUND_SEARCH_ERROR = "Заказы, соответствующие параметрам поиска, не были найдены!";
     private static final String CL_ORDER_ALREADY_COMPLETED_ERROR = "Этот заказ уже подтверждён!";
-    private static final String CL_ORDER_COMPLETION_ERROR = "Произошла ошибка во время подтверждения заказа!";
+    public static final String ORDER_COMPLETION_ERROR = "Произошла ошибка во время подтверждения заказа!";
     private static final String FILTER_TYPE_NOT_SELECTED = "Способ фильтрации не был выбран!";
     private static final String ONLY_COMPLETED_ORDERS = "onlyCompleted";
     private static final String ONLY_UNCOMPLETED_ORDERS = "onlyUncompleted";
@@ -84,11 +83,11 @@ public class EmployeeClientsOrdersController {
                     mailService.sendSuccessfulClientOrderEmail(clientsOrder.getUser(), Optional.ofNullable(clientsOrder.getDeliveryAddress()));
                 } catch (MessagingException | UnsupportedEncodingException e) {
                     logger.error(e.getMessage());
-                    redirectAttributes.addFlashAttribute("error",CL_ORDER_COMPLETION_ERROR);
+                    redirectAttributes.addFlashAttribute("error", ORDER_COMPLETION_ERROR);
                 }
             } catch (CustomServiceException exception) {
                 logger.error(exception.getMessage());
-                redirectAttributes.addFlashAttribute("error",CL_ORDER_COMPLETION_ERROR);
+                redirectAttributes.addFlashAttribute("error", ORDER_COMPLETION_ERROR);
             }
         } else {
             redirectAttributes.addFlashAttribute("error",CL_ORDER_ALREADY_COMPLETED_ERROR);

@@ -1,16 +1,12 @@
 package com.makkras.shop.service.impl;
 
-import com.makkras.shop.entity.Product;
-import com.makkras.shop.entity.ProductCategory;
 import com.makkras.shop.entity.SupplierCompany;
 import com.makkras.shop.exception.CustomServiceException;
 import com.makkras.shop.repo.SupplierJpaRepository;
 import com.makkras.shop.service.SupplierService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -78,5 +74,15 @@ public class CustomSupplierService implements SupplierService {
     @Override
     public List<SupplierCompany> getAllSupplierCompaniesAndOrderByIsActiveAsc() {
         return supplierJpaRepository.findAllByOrderByIsActiveAsc();
+    }
+
+    @Override
+    public SupplierCompany getSupplierCompanyById(Long supplierCompanyId) throws CustomServiceException {
+        return supplierJpaRepository.findById(supplierCompanyId).orElseThrow(CustomServiceException::new);
+    }
+
+    @Override
+    public List<SupplierCompany> getAllSupplierCompaniesWithActivityStatus(boolean isActive) {
+        return supplierJpaRepository.findAllByIsActive(isActive);
     }
 }

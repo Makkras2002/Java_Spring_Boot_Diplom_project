@@ -8,7 +8,7 @@
           crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
-<body>
+<body style="background-color: lightblue; background-repeat: no-repeat; background-size: cover">
 <header th:insert="header.html :: header"/>
 <div th:insert="sidebars/employeeSidebar.html" :: div/>
 <br/>
@@ -42,7 +42,7 @@
 </div>
 <div class="row mt-2 mx-auto">
     <div class="container w-auto">
-        <table class="table table-primary table-bordered table-hover" style="border-radius: 6px;overflow: hidden">
+        <table class="table table-primary table-bordered" style="border-radius: 6px;overflow: hidden">
             <tbody id="ordersTable">
             </tbody>
         </table>

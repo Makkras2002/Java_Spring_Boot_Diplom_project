@@ -1,0 +1,23 @@
+<div class="modal fade" id="addSROrderModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addSROrderModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="addSROrderModalLabel">Завершение создания заказа на пополнение склада</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body justify-content-center">
+                <form th:action="@{/addSROrder}" method="post" id="addSROrderForm">
+                    <label for="supplierCompanyId" class="form-label">Выберите компанию-поставщика</label>
+                    <select class="form-select" id="supplierCompanyId" name="supplierCompanyId" required="required">
+                        <option selected="selected" disabled="disabled" value="">-</option>
+                        <option th:each="company : ${supplierCompanies}" th:text="${company.supplierCompanyName}" th:value="${company.supplierCompanyId}"></option>
+                    </select>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" form="addSROrderForm" class="btn btn-outline-primary">Завершить создание заказа на пополнение склада</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>

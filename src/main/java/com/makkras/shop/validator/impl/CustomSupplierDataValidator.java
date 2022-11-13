@@ -4,7 +4,6 @@ import com.makkras.shop.entity.SupplierCompany;
 import com.makkras.shop.validator.SupplierDataValidator;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

@@ -38,7 +38,6 @@ public class UserController {
 
     private static final  String USER_ALREADY_REGISTERED_ERROR = "Пользователь с таким логином или почтой уже зарегистрирован!";
     private static final String INVALID_DATA_ERROR = "Введены недопустимые данные!";
-    private static final String USER_WITH_SUCH_DATA_ALREADY_EXISTS = "Пользователь с такими данными уже существует!";
     private static final String PASSWORD_REPEATED_INCORRECTLY = "Введённые пароли не совпадают";
     private static final  String URL_TO_CONFIRM_REGISTRATION_BY_EMAIL = "/regconfirm";
     private static final String APP_HOST = "http://localhost:8080";
