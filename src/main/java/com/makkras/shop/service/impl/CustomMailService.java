@@ -29,7 +29,7 @@ public class CustomMailService implements MailService {
             
             Дорогой [[name]],<br>
             Вы успешно осуществили заказ продуктов в магазине BestFood!<br>
-            Ваш адрес доставки - [[DELIVERY]]<br>
+            Ваш адрес доставки - [[DELIVERY]].<br>
             Мы Вам благодарны,<br>
             ООО \"BestFood\".""";
     private final JavaMailSender mailSender;
