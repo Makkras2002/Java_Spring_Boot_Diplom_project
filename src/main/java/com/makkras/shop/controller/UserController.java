@@ -1,5 +1,6 @@
 package com.makkras.shop.controller;
 
+import com.google.gson.Gson;
 import com.makkras.shop.entity.RoleType;
 import com.makkras.shop.entity.User;
 import com.makkras.shop.entity.UserRole;
@@ -30,8 +31,10 @@ import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 public class UserController {
@@ -42,11 +45,15 @@ public class UserController {
     private static final  String URL_TO_CONFIRM_REGISTRATION_BY_EMAIL = "/regconfirm";
     private static final String APP_HOST = "http://localhost:8080";
     private static final String USER_TO_CONFIRM_REG_ATTRIBUTE_NAME = "userAwaitingEmailConfirmationToRegister";
+    private static final String ONLY_ACTIVE_USERS = "onlyActiveUsers";
+    private static final String ONLY_INACTIVE_USERS = "onlyInactiveUsers";
+    private static final String NONE_USERS_FOUND_SEARCH_ERROR = "Пользователи, соответствующие параметрам поиска, не были найдены!";
     private static Logger logger = LogManager.getLogger();
     private final UserService userService;
     private final UserDataValidator userDataValidator;
     private final PasswordEncoder passwordEncoder;
     private final MailService mailService;
+    private final Gson gson;
 
     @Autowired
     public UserController(CustomUserService userService, CustomUserDataValidator userDataValidator,
@@ -55,6 +62,7 @@ public class UserController {
         this.userDataValidator = userDataValidator;
         this.passwordEncoder = new BCryptPasswordEncoder(12);
         this.mailService = mailService;
+        gson = new Gson();
     }
 
     @GetMapping("/login")
@@ -188,5 +196,74 @@ public class UserController {
             redirectAttributes.addFlashAttribute("error",PASSWORD_REPEATED_INCORRECTLY);
         }
         return "redirect:/";
+    }
+
+    @GetMapping("/users")
+    public String showUsers(Model model) {
+        model.addAttribute("users",gson.toJson(userService.getAllUsers()));
+        model.addAttribute("roleTypes",RoleType.values());
+        return "users";
+    }
+
+    @PostMapping("/changeActivityStatus")
+    public String changeUserActivityStatus(Model model,@RequestParam Long user_id) {
+        userService.updateUserActivityStatus(user_id);
+        return "redirect:/users";
+    }
+
+    @PostMapping("/changeUserAuthority")
+    public String changeUserAuthority(Model model,@RequestParam Long user_id) {
+        userService.updateUserAuthority(user_id);
+        return "redirect:/users";
+    }
+
+    @PostMapping("/sortUsers")
+    public String sortUsers(Model model, @RequestParam(required = false) String sortFormSelect) {
+        String filteredUsers;
+        if(sortFormSelect == null || sortFormSelect.equals("noneSelected")) {
+            filteredUsers = gson.toJson(userService.getAllUsers());
+            model.addAttribute("error", EmployeeClientsOrdersController.FILTER_TYPE_NOT_SELECTED);
+
+        } else if(sortFormSelect.equals("byLogin")) {
+            filteredUsers = gson.toJson(userService.getAllUsersAndOrderByLogin());
+        } else if(sortFormSelect.equals("byEmail")) {
+            filteredUsers = gson.toJson(userService.getAllUsersAndOrderByEmail());
+        } else if(sortFormSelect.equals("byRoleDesc")) {
+            filteredUsers = gson.toJson(userService.getAllUsersAndOrderByRoleDesc());
+        } else if(sortFormSelect.equals("byRoleAsc")) {
+            filteredUsers = gson.toJson(userService.getAllUsersAndOrderByRoleAsc());
+        } else if(sortFormSelect.equals("byActivityDesc")) {
+            filteredUsers = gson.toJson(userService.getAllUsersAndOrderByActivityDesc());
+        } else if(sortFormSelect.equals("byActivityAsc")){
+            filteredUsers = gson.toJson(userService.getAllUsersAndOrderByActivityAsc());
+        } else {
+            filteredUsers = gson.toJson(userService.getAllUsers());
+        }
+        model.addAttribute("users",filteredUsers);
+        model.addAttribute("roleTypes",RoleType.values());
+        return "users";
+    }
+
+    @PostMapping("/searchUsers")
+    public String searchUsers(Model model,
+                              @RequestParam(required = false) String name,
+                              @RequestParam(required = false) String email,
+                              @RequestParam(required = false) String role,
+                              @RequestParam String activityStatus) {
+        if(role == null) {
+            role = "";
+        }
+        List<User> filteredUsers = userService.getFilteredUsers("%"+name+"%","%"+email+"%","%"+role+"%");
+        if(activityStatus.equals(ONLY_ACTIVE_USERS)) {
+            filteredUsers = filteredUsers.stream().filter(User::isActive).collect(Collectors.toList());
+        } else if(activityStatus.equals(ONLY_INACTIVE_USERS)) {
+            filteredUsers = filteredUsers.stream().filter(user -> !user.isActive()).collect(Collectors.toList());
+        }
+        if(filteredUsers.size() == 0) {
+            model.addAttribute("error",NONE_USERS_FOUND_SEARCH_ERROR);
+        }
+        model.addAttribute("users",gson.toJson(filteredUsers));
+        model.addAttribute("roleTypes",RoleType.values());
+        return "users";
     }
 }

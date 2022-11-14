@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -16,6 +17,21 @@ public interface UserJpaRepository extends JpaRepository<User,Long> {
     boolean existsByLoginOrEmail(String login, String email);
     boolean existsByLogin(String login);
     boolean existsByEmail(String email);
+    List<User> findAllByOrderByLogin();
+    List<User> findAllByOrderByEmail();
+    List<User> findAllByOrderByRoleDesc();
+    List<User> findAllByOrderByRoleAsc();
+    List<User> findAllByOrderByIsActiveDesc();
+    List<User> findAllByOrderByIsActiveAsc();
+
+    @Query(value = """
+    SELECT DISTINCT * FROM users JOIN user_roles ON users.role_id = user_roles.role_id 
+    WHERE login LIKE ? AND 
+    email LIKE ? AND 
+    user_roles.role_name LIKE ?""",nativeQuery = true)
+    List<User> findAllByLoginLikeAndEmailLikeAndRoleLike(String login, String email, String role);
+
+
     @Modifying
     @Transactional
     @Query(value = "UPDATE Users SET login=? WHERE login =?",nativeQuery = true)
@@ -30,4 +46,14 @@ public interface UserJpaRepository extends JpaRepository<User,Long> {
     @Transactional
     @Query(value = "UPDATE Users SET password=? WHERE login = ?",nativeQuery = true)
     int updateUserPassword(String newPassword, String login);
+
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE Users SET is_active=? WHERE user_id = ?",nativeQuery = true)
+    void updateUserActivityStatus(boolean activityStatus, Long id);
+
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE Users SET role_id=? WHERE user_id = ?",nativeQuery = true)
+    void updateUserAuthority(Long roleId, Long id);
 }

@@ -1,17 +1,20 @@
-<div class="modal fade" id="searchClOrdersModal" tabindex="-1" aria-labelledby="searchClOrdersModalLabel" aria-hidden="true">
+<div class="modal fade" id="searchSROrdersModal" tabindex="-1" aria-labelledby="searchSROrdersModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="searchClOrdersModalLabel">Поиск</h1>
+                <h1 class="modal-title fs-5" id="searchSROrdersModalLabel">Поиск</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <p style="color: darkorange; font-weight: bolder">Заполните поля необходимые для поиска:</p>
-                <form th:action="@{/searchClOrders}" method="post" id="searchClOrdersForm">
-                    <label for="name" class="form-label">Введите имя или email пользователя, совершившего заказ</label>
-                    <input class="form-control" type="text" id="name" minlength="3" maxlength="100" name="name" placeholder="Имя или email пользователя, совершившего заказ"/>
-                    <label for="deliveryAddress" class="form-label">Введите адрес доставки</label>
-                    <input class="form-control mb-2" type="text" id="deliveryAddress" minlength="3" maxlength="100" name="deliveryAddress" placeholder="Адрес доставки"/>
+                <form th:action="@{/searchSROrders}" method="post" id="searchSROrdersForm">
+                    <label for="name" class="form-label">Введите имя или email работника, совершившего заказ</label>
+                    <input class="form-control" type="text" id="name" minlength="3" maxlength="100" name="name" placeholder="Имя или email работника, совершившего заказ"/>
+                    <label for="supplierCompanyName" class="form-label">Выберите компанию-поставщика</label>
+                    <select class="form-select" id="supplierCompanyName" name="supplierCompanyName">
+                        <option selected="selected" disabled="disabled" value="">-</option>
+                        <option th:each="company : ${supplierCompanies}" th:text="${company.supplierCompanyName}" th:value="${company.supplierCompanyName}"></option>
+                    </select>
                     <label for="startDate" class="form-label">Введите крайнюю раннюю дату заказа</label>
                     <input type="date" class="form-control" id="startDate" name="startDate"/>
                     <label for="endDate" class="form-label">Введите крайнюю позднюю дату</label>
@@ -27,7 +30,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="submit" form="searchClOrdersForm" class="btn btn-outline-primary">Поиск</button>
+                <button type="submit" form="searchSROrdersForm" class="btn btn-outline-primary">Поиск</button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
             </div>
         </div>

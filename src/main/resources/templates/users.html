@@ -12,38 +12,39 @@
 <header th:insert="header.html :: header"/>
 <div th:insert="sidebars/employeeSidebar.html" :: div/>
 <br/>
-<div id="ordersData" style="display: none" th:text="${clientsOrders}"></div>
+<div id="usersData" style="display: none" th:text="${users}"></div>
 <div id="csrf" th:text="${_csrf.getToken()}" style="display: none"></div>
 <div id="error" style="display: none" th:text="${error}"></div>
 <div id="context" style="display: none" th:text="${#request.getContextPath()}"></div>
 <div class="row mx-auto justify-content-center">
     <div class="col-4 mx-auto">
-        <button type="button" class="btn btn-warning col-md-1 w-auto mx-auto" data-bs-toggle="modal" data-bs-target="#searchClOrdersModal">
+        <button type="button" class="btn btn-warning col-md-1 w-auto mx-auto" data-bs-toggle="modal" data-bs-target="#searchUsersModal">
             <i class="fa fa-search"></i>|
-            Поиск
+            Фильтрация и поиск
         </button>
     </div>
     <div class="col-4 mx-auto">
-        <form th:action="@{/filterClOrders}" method="post" id="sortForm" class="form col-md-1 w-auto">
-            <select class="form-select" id="sortFormSelect" name="filterFormSelect">
-                <option selected="selected" style="color: darkgray" disabled="disabled" value="noneSelected">Выберите фильтр...</option>
-                <option style="color: darkorange" value="showCompleted">Показать подтверждённые заказы</option>
-                <option style="color: darkorange" value="showUncompleted">Показать неподтверждённые заказы</option>
-                <option style="color: darkorange" value="showAll">Показать все заказы</option>
-                <option style="color: darkorange" value="orderByDateDesc">Отсортировать по дате (от поздней к ранней)</option>
-                <option style="color: darkorange" value="orderByDateAsc">Отсортировать по дате (от ранней к поздней)</option>
+        <form th:action="@{/sortUsers}" method="post" id="sortForm" class="form col-md-1 w-auto">
+            <select class="form-select" id="sortFormSelect" name="sortFormSelect">
+                <option selected="selected" style="color: darkgray" disabled="disabled" value="noneSelected">Выберите способ сортировки...</option>
+                <option style="color: darkorange" value="byLogin">По логину</option>
+                <option style="color: darkorange" value="byEmail">По email</option>
+                <option style="color: darkorange" value="byRoleDesc">По роли (сначала работники)</option>
+                <option style="color: darkorange" value="byRoleAsc">По роли (сначала клиенты)</option>
+                <option style="color: darkorange" value="byActivityDesc">По статусу активности (сначала активные)</option>
+                <option style="color: darkorange" value="byActivityAsc">По статусу активности (сначала неактивные)</option>
             </select>
         </form>
     </div>
     <div class="col-4 mx-auto">
         <button class="btn btn-outline-warning col-md-1 w-auto mx-auto" type="submit" form="sortForm">
-            <i class="fa fa-sort"></i>| Фильтрация</button>
+            <i class="fa fa-sort"></i>| Сортировка</button>
     </div>
 </div>
-<div class="row mt-2 mx-auto">
-    <div class="container w-auto">
-        <table class="table table-primary table-bordered" style="border-radius: 6px;overflow: hidden">
-            <tbody id="ordersTable">
+<div class="row mt-5 mx-auto">
+    <div class="container mx-auto w-auto">
+        <table class="table table-primary table-bordered" style="border-radius: 16px;overflow: hidden">
+            <tbody id="usersTable">
             </tbody>
         </table>
     </div>
@@ -59,10 +60,10 @@
         <button class="btn-warning" id="next" type="button" onclick="nextPage()">Далее</button>
     </div>
 </div>
-<div th:insert="modals/searchClOrdersModal.html" :: div/>
+<div th:insert="modals/searchUsersModal.html" :: div/>
 <footer th:insert="footer.html" :: footer/>
 </body>
-<script type="text/javascript" th:src="@{/js/clients_orders_control_page_handler.js}"></script>
+<script type="text/javascript" th:src="@{/js/users_page_handler.js}"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
         integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"

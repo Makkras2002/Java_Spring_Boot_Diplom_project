@@ -18,14 +18,14 @@
 <div id="context" style="display: none" th:text="${#request.getContextPath()}"></div>
 <div class="row mx-auto justify-content-center">
     <div class="col-4 mx-auto">
-        <button type="button" class="btn btn-warning col-md-1 w-auto mx-auto" data-bs-toggle="modal" data-bs-target="#searchClOrdersModal">
+        <button type="button" class="btn btn-warning col-md-1 w-auto mx-auto" data-bs-toggle="modal" data-bs-target="#searchSROrdersModal">
             <i class="fa fa-search"></i>|
             Поиск
         </button>
     </div>
     <div class="col-4 mx-auto">
         <form th:action="@{/filterSROrders}" method="post" id="sortForm" class="form col-md-1 w-auto">
-            <select class="form-select" id="sortFormSelect" name="filterFormSelect">
+            <select class="form-select" id="sortFormSelect" name="filterFormSelect" required="required">
                 <option selected="selected" style="color: darkgray" disabled="disabled" value="noneSelected">Выберите фильтр...</option>
                 <option style="color: darkorange" value="showCompleted">Показать подтверждённые заказы</option>
                 <option style="color: darkorange" value="showUncompleted">Показать неподтверждённые заказы</option>
@@ -37,7 +37,7 @@
     </div>
     <div class="col-4 mx-auto">
         <button class="btn btn-outline-warning col-md-1 w-auto mx-auto" type="submit" form="sortForm">
-            <i class="fa fa-sort"></i>| Сортировка</button>
+            <i class="fa fa-sort"></i>| Фильтрация</button>
     </div>
 </div>
 <div class="row mt-2 mx-auto justify-content-between">
@@ -100,7 +100,7 @@
     </div>
 </div>
 <div th:insert="modals/addSROrderModal.html" :: div/>
-<div th:insert="modals/searchClOrdersModal.html" :: div/>
+<div th:insert="modals/searchSROrdersModal.html" :: div/>
 <footer th:insert="footer.html" :: footer/>
 </body>
 <script type="text/javascript" th:src="@{/js/stock_refill_orders_control_page_handler.js}"></script>

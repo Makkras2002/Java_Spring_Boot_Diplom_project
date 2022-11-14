@@ -11,6 +11,7 @@ import com.makkras.shop.validator.impl.CustomStockRefillOrderValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,9 +26,11 @@ import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 public class StockRefillOrdersController {
@@ -171,5 +174,60 @@ public class StockRefillOrdersController {
             redirectAttributes.addFlashAttribute("error",ORDER_ALREADY_COMPLETED_ERROR);
         }
         return "redirect:/stockRefillOrders";
+    }
+
+    @PostMapping("/filterSROrders")
+    public String filterClientsOrders(Model model, @RequestParam(required = false) String filterFormSelect) {
+        String filteredStockRefillOrdersInGson;
+        if(filterFormSelect == null || filterFormSelect.equals("noneSelected")) {
+            filteredStockRefillOrdersInGson = gson.toJson(stockRefillOrderService.getAllStockRefillOrders());
+            model.addAttribute("error", EmployeeClientsOrdersController.FILTER_TYPE_NOT_SELECTED);
+
+        } else if(filterFormSelect.equals("showCompleted")) {
+            filteredStockRefillOrdersInGson = gson.toJson(stockRefillOrderService.getAllStockRefillOrdersByCompletionStatus(true));
+        } else if(filterFormSelect.equals("showUncompleted")) {
+            filteredStockRefillOrdersInGson = gson.toJson(stockRefillOrderService.getAllStockRefillOrdersByCompletionStatus(false));
+        } else if(filterFormSelect.equals("orderByDateDesc")) {
+            filteredStockRefillOrdersInGson = gson.toJson(stockRefillOrderService.getAllStockRefillOrdersAndOrderByDateDesc());
+        }else if(filterFormSelect.equals("orderByDateAsc")) {
+            filteredStockRefillOrdersInGson = gson.toJson(stockRefillOrderService.getAllStockRefillOrdersAndOrderByDateAsc());
+        }else {
+            filteredStockRefillOrdersInGson = gson.toJson(stockRefillOrderService.getAllStockRefillOrders());
+        }
+        model.addAttribute("resupplyOrders",filteredStockRefillOrdersInGson);
+        model.addAttribute("products",productService.getAllProducts());
+        model.addAttribute("supplierCompanies",supplierService.getAllSupplierCompaniesWithActivityStatus(true));
+        return "stockRefillOrders";
+    }
+
+    @PostMapping("/searchSROrders")
+    public String searchClientsOrders(Model model,
+                                      @RequestParam(required = false) String name,
+                                      @RequestParam(required = false) String supplierCompanyName,
+                                      @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+                                      @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+                                      @RequestParam String completionStatus) {
+        if(supplierCompanyName == null) {
+            supplierCompanyName = "";
+        }
+        if(startDate==null) {
+            startDate = LocalDate.of(2000,1,1);
+        }
+        if(endDate == null) {
+            endDate = LocalDate.now();
+        }
+        List<CompleteStockRefillOrder> filteredOrders = stockRefillOrderService.getAllFilteredStockRefillOrders("%"+name+"%","%"+supplierCompanyName+"%",startDate,endDate);
+        if(completionStatus.equals(EmployeeClientsOrdersController.ONLY_COMPLETED_ORDERS)) {
+            filteredOrders = filteredOrders.stream().filter(CompleteStockRefillOrder::isCompleted).collect(Collectors.toList());
+        } else if(completionStatus.equals(EmployeeClientsOrdersController.ONLY_UNCOMPLETED_ORDERS)) {
+            filteredOrders = filteredOrders.stream().filter(order -> !order.isCompleted()).collect(Collectors.toList());
+        }
+        if(filteredOrders.size() == 0) {
+            model.addAttribute("error",EmployeeClientsOrdersController.NONE_ORDERS_FOUND_SEARCH_ERROR);
+        }
+        model.addAttribute("resupplyOrders",gson.toJson(filteredOrders));
+        model.addAttribute("products",productService.getAllProducts());
+        model.addAttribute("supplierCompanies",supplierService.getAllSupplierCompaniesWithActivityStatus(true));
+        return "stockRefillOrders";
     }
 }

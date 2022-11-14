@@ -1,0 +1,36 @@
+<div class="modal fade" id="searchUsersModal" tabindex="-1" aria-labelledby="searchUsersModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="searchUsersModalLabel">Фильтрация и поиск</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p style="color: darkorange; font-weight: bolder">Заполните поля необходимые для поиска и фильтрации:</p>
+                <form th:action="@{/searchUsers}" method="post" id="searchUsersForm">
+                    <label for="name" class="form-label">Введите имя пользователя</label>
+                    <input class="form-control" type="text" id="name" minlength="3" maxlength="100" name="name" placeholder="Имя пользователя"/>
+                    <label for="email" class="form-label">Введите email пользователя</label>
+                    <input class="form-control" type="text" id="email" minlength="3" maxlength="100" name="email" placeholder="Email пользователя"/>
+                    <label for="role" class="form-label">Выберите роль пользователя</label>
+                    <select class="form-select" id="role" name="role">
+                        <option selected="selected" disabled="disabled" value="">-</option>
+                        <option th:each="role : ${roleTypes}" th:text="${role.roleName}" th:value="${role.roleName}"></option>
+                    </select>
+                    <input class="form-check-input mt-2" type="radio" value="onlyActiveUsers" name="activityStatus" id="activityStatus1">
+                    <label for="activityStatus1" class="form-label">Только активные пользователи</label>
+                    <br/>
+                    <input class="form-check-input" type="radio" value="onlyInactiveUsers" name="activityStatus" id="activityStatus2">
+                    <label for="activityStatus2" class="form-label">Только неактивные пользователи</label>
+                    <br/>
+                    <input class="form-check-input" checked type="radio" value="allUsers" name="activityStatus" id="activityStatus3">
+                    <label for="activityStatus3" class="form-label">Все пользователи</label>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" form="searchUsersForm" class="btn btn-outline-primary">Поиск</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -33,12 +33,12 @@ import java.util.stream.Collectors;
 
 @Controller
 public class EmployeeClientsOrdersController {
-    private static final String NONE_ORDERS_FOUND_SEARCH_ERROR = "Заказы, соответствующие параметрам поиска, не были найдены!";
+    public static final String NONE_ORDERS_FOUND_SEARCH_ERROR = "Заказы, соответствующие параметрам поиска, не были найдены!";
     private static final String CL_ORDER_ALREADY_COMPLETED_ERROR = "Этот заказ уже подтверждён!";
     public static final String ORDER_COMPLETION_ERROR = "Произошла ошибка во время подтверждения заказа!";
-    private static final String FILTER_TYPE_NOT_SELECTED = "Способ фильтрации не был выбран!";
-    private static final String ONLY_COMPLETED_ORDERS = "onlyCompleted";
-    private static final String ONLY_UNCOMPLETED_ORDERS = "onlyUncompleted";
+    public static final String FILTER_TYPE_NOT_SELECTED = "Способ фильтрации не был выбран!";
+    public static final String ONLY_COMPLETED_ORDERS = "onlyCompleted";
+    public static final String ONLY_UNCOMPLETED_ORDERS = "onlyUncompleted";
     private static final Logger logger = LogManager.getLogger();
     private final ClientOrderService clientOrderService;
     private final ProductService productService;

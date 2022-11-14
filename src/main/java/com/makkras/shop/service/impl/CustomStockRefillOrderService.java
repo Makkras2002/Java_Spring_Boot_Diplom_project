@@ -1,9 +1,6 @@
 package com.makkras.shop.service.impl;
 
-import com.makkras.shop.entity.CompleteStockRefillOrder;
-import com.makkras.shop.entity.ComponentStockRefillOrder;
-import com.makkras.shop.entity.SupplierCompany;
-import com.makkras.shop.entity.User;
+import com.makkras.shop.entity.*;
 import com.makkras.shop.exception.CustomServiceException;
 import com.makkras.shop.repo.StockRefillOrdersJpaRepository;
 import com.makkras.shop.service.StockRefillOrderService;
@@ -43,4 +40,25 @@ public class CustomStockRefillOrderService implements StockRefillOrderService {
     public CompleteStockRefillOrder getStockRefillOrderById(Long orderId) throws CustomServiceException {
         return stockRefillOrdersJpaRepository.findById(orderId).orElseThrow(CustomServiceException::new);
     }
+
+    @Override
+    public List<CompleteStockRefillOrder> getAllStockRefillOrdersByCompletionStatus(boolean completionStatus) {
+        return stockRefillOrdersJpaRepository.findAllByIsCompleted(completionStatus);
+    }
+
+    @Override
+    public List<CompleteStockRefillOrder> getAllStockRefillOrdersAndOrderByDateDesc() {
+        return stockRefillOrdersJpaRepository.findAllByOrderByCompleteStockRefillOrderDateDesc();
+    }
+
+    @Override
+    public List<CompleteStockRefillOrder> getAllStockRefillOrdersAndOrderByDateAsc() {
+        return stockRefillOrdersJpaRepository.findAllByOrderByCompleteStockRefillOrderDateAsc();
+    }
+
+    @Override
+    public List<CompleteStockRefillOrder> getAllFilteredStockRefillOrders(String loginOrEmail, String supplierCompanyName, LocalDate startDate, LocalDate endDate) {
+        return stockRefillOrdersJpaRepository.findAllByUser_LoginLikeOrUser_EmailLikeAndSupplierCompanyNameLikeAndCompleteStockRefillOrderDateIsBetween(loginOrEmail,loginOrEmail,supplierCompanyName,startDate,endDate);
+    }
+
 }

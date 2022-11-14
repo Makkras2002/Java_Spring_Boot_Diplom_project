@@ -100,7 +100,7 @@ function changePage(page)
             status+
             "</div></td>"+
             "<td>"+
-            "<button form='"+i+"' onclick='checkIfOrderIsCompleted(event,"+i+")' id='confirmOrderButton' type='submit' class='btn btn-primary'>"+"Подтвердить заказ"+
+            "<button form='"+i+"' onclick='checkIfOrderIsCompleted(event,"+i+")' id='confirmOrderButton' type='submit' class='btn btn-primary btn-sm'>"+"Подтвердить заказ"+
             "</button></td>"
             +"</tr>";
         listing_table.innerHTML += tr;
