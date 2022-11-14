@@ -162,9 +162,12 @@ public class ClientCatalogController {
     @PostMapping("/alterOrder")
     public String alterOrder(Model model,
                              @RequestParam Long productId,
-                             @RequestParam Long productAmount,
+                             @RequestParam(required = false) Long productAmount,
                              HttpServletRequest request,
                              RedirectAttributes redirectAttributes) {
+        if(productAmount == null) {
+            productAmount = 0L;
+        }
         HttpSession session = request.getSession();
         List<ComponentClientsOrder> componentClientsOrdersList = (List<ComponentClientsOrder>) session.getAttribute(COMPONENT_ORDERS_LIST);
         if(componentClientsOrdersList != null) {

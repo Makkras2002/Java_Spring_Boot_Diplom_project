@@ -26,7 +26,7 @@
                 <td th:text="${order.product.productName}"></td>
                 <td th:text="${order.product.category.category}"></td>
                 <td><img th:src="${#request.getContextPath()}+'/prod_pics/'+${order.product.picturePath}" width='120px' height='120px' th:alt="${order.product.productName}"></td>
-                <td><input type="number" th:form="${iter.index}" min="0" th:max="${order.product.amountInStock}" name="productAmount" th:value="${order.orderedProductAmount}"> ед.</td>
+                <td><input type="number" th:form="${iter.index}" min="0" step="1" th:max="${order.product.amountInStock}" name="productAmount" th:value="${order.orderedProductAmount}"> ед.</td>
                 <td th:text="${order.orderedProductFullPrice} + ' BYN'"></td>
                 <td><button class="btn btn-outline-danger" type="submit" th:form="${iter.index}">Изменить количество заказанного товара</button></td>
             </tr>
