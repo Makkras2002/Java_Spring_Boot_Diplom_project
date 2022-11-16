@@ -68,6 +68,7 @@ public class StockRefillOrdersController {
     public String showStockRefillOrders(Model model, HttpServletRequest request) {
         model.addAttribute("resupplyOrders",gson.toJson(stockRefillOrderService.getAllStockRefillOrders()));
         model.addAttribute("products",productService.getAllProducts());
+        model.addAttribute("allSupplierCompanies",supplierService.getAllSupplierCompanies());
         model.addAttribute("supplierCompanies",supplierService.getAllSupplierCompaniesWithActivityStatus(true));
         HttpSession session = request.getSession();
         List<ComponentStockRefillOrder> componentStockRefillOrdersList = (List<ComponentStockRefillOrder>) session.getAttribute(COMPONENT_STOCK_REFILL_ORDERS_LIST);
@@ -198,6 +199,7 @@ public class StockRefillOrdersController {
         model.addAttribute("resupplyOrders",filteredStockRefillOrdersInGson);
         model.addAttribute("products",productService.getAllProducts());
         model.addAttribute("supplierCompanies",supplierService.getAllSupplierCompaniesWithActivityStatus(true));
+        model.addAttribute("allSupplierCompanies",supplierService.getAllSupplierCompanies());
         return "stockRefillOrders";
     }
 
@@ -229,6 +231,7 @@ public class StockRefillOrdersController {
         model.addAttribute("resupplyOrders",gson.toJson(filteredOrders));
         model.addAttribute("products",productService.getAllProducts());
         model.addAttribute("supplierCompanies",supplierService.getAllSupplierCompaniesWithActivityStatus(true));
+        model.addAttribute("allSupplierCompanies",supplierService.getAllSupplierCompanies());
         return "stockRefillOrders";
     }
 }

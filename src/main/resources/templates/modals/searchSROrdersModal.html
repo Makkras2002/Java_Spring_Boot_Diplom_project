@@ -13,7 +13,7 @@
                     <label for="supplierCompanyName" class="form-label">Выберите компанию-поставщика</label>
                     <select class="form-select" id="supplierCompanyName" name="supplierCompanyName">
                         <option selected="selected" disabled="disabled" value="">-</option>
-                        <option th:each="company : ${supplierCompanies}" th:text="${company.supplierCompanyName}" th:value="${company.supplierCompanyName}"></option>
+                        <option th:each="company : ${allSupplierCompanies}" th:text="${company.supplierCompanyName}" th:value="${company.supplierCompanyName}"></option>
                     </select>
                     <label for="startDate" class="form-label">Введите крайнюю раннюю дату заказа</label>
                     <input type="date" class="form-control" id="startDate" name="startDate"/>
