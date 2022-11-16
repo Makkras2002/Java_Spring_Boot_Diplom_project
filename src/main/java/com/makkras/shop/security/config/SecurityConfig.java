@@ -52,7 +52,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/suppliers", "/updateSupplierData", "/addSupplier", "/sortSuppliers",
                         "/searchSuppliers", "/searchClOrders","/addProductToStockRefillOrder",
                         "/removeProductFromStockRefillOrder","/addSROrder","/completeSROrder",
-                        "/changeUserAuthority","/changeActivityStatus", "/sortUsers","/searchUsers")
+                        "/changeUserAuthority","/changeActivityStatus", "/sortUsers","/searchUsers",
+                        "/updateExpensesData","/deleteExpensesData","/addExpenses","/changeFinances","/sortExpenses")
                 .hasAuthority("EMPLOYEE")
                 .antMatchers("/logout","/changeLogin","/changePassword","/changeEmail","/addToBasket",
                         "/showBasket","/alterOrder","/orderProducts")

@@ -1,0 +1,27 @@
+<div class="modal fade" id="addExpensesModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addExpensesModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="addExpensesModalLabel">Добавление данных о новых затратах</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body justify-content-center">
+                <form th:action="@{/addExpenses}" method="post" id="addExpensesForm">
+                    <label for="name" class="form-label">Введите название затрат</label>
+                    <input class="form-control mb-2" type="text" id="name" minlength="3" maxlength="100" name="name" placeholder="Название затрат" required="required"/>
+                    <label for="amount" class="form-label mt-2">Введите размер стоимости затрат</label>
+                    <input class="form-control" type="number" min="0" step="0.01" name="amount" id="amount" required="required"/>
+                    <label for="period" class="form-label mt-2">Введите период вычета затрат</label>
+                    <select name="period" id="period" class="form-select" required="required">
+                        <option value="" selected="selected" disabled="disabled">-</option>
+                        <option th:each="period : ${periodTypes}" th:text="${period.name}" th:value="${period.name}"></option>
+                    </select>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" form="addExpensesForm" class="btn btn-outline-primary">Добавить данные о новых затратах</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>

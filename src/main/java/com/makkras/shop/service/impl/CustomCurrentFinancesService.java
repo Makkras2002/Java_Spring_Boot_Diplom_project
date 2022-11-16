@@ -30,4 +30,9 @@ public class CustomCurrentFinancesService implements CurrentFinancesService {
         }
 
     }
+
+    @Override
+    public CurrentFinances getCurrentFinances() throws CustomServiceException {
+        return financesJpaRepository.findAll().stream().findFirst().orElseThrow(CustomServiceException::new);
+    }
 }

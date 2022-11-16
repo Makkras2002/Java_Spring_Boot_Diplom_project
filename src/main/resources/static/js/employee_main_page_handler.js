@@ -87,7 +87,7 @@ function changePage(page)
             products[i].category.category +
             "'/>" +
             "</td>" +
-            "<td>" + "<input onchange = \"changeColorOnFieldUpdate("+i+",'price')\" form='"+i+"' type='number' name='price' id='price"+i+"' min='0' step='0.01' value='"+
+            "<td>" + "<input onchange = \"changeColorOnFieldUpdate("+i+",'price')\" form='"+i+"' type='number' name='price' id='price"+i+"' min='0' step='0.01' required='required' value='"+
             products[i].productPrice +
             "'/>"
              +" BYN"+
@@ -99,7 +99,7 @@ function changePage(page)
             products[i].productComment +
             "</textarea>" +
             "</td>"+
-            "<td><input onchange = \"changeColorOnFieldUpdate("+i+",'amount')\" form='"+i+"' type='number' name='amount'  id='amount"+i+"' step='1' value='0'"+
+            "<td><input onchange = \"changeColorOnFieldUpdate("+i+",'amount')\" form='"+i+"' type='number' name='amount'  id='amount"+i+"' required='required' step='1' value='0'"+
             "/></td>" +
             "<td>" +
             products[i].amountInStock+ " ед." +
