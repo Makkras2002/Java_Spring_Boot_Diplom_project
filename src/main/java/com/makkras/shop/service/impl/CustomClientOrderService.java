@@ -5,6 +5,8 @@ import com.makkras.shop.entity.ComponentClientsOrder;
 import com.makkras.shop.entity.User;
 import com.makkras.shop.exception.CustomServiceException;
 import com.makkras.shop.repo.ClientOrderJpaRepository;
+import com.makkras.shop.repo.projection_interface.MoneyByDateStatistics;
+import com.makkras.shop.repo.projection_interface.ProductsSellingStatistics;
 import com.makkras.shop.service.ClientOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -69,5 +71,15 @@ public class CustomClientOrderService implements ClientOrderService {
     @Override
     public List<CompleteClientsOrder> getAllFilteredClientsOrders(String loginOrEmail, String deliveryAddress, LocalDate startDate, LocalDate endDate) {
         return clientOrderJpaRepository.findAllByUser_LoginLikeOrUser_EmailLikeAndDeliveryAddressLikeAndCompleteClientsOrderDateIsBetween(loginOrEmail,loginOrEmail,deliveryAddress,startDate,endDate);
+    }
+
+    @Override
+    public List<ProductsSellingStatistics> countProductsSellingStatistics() {
+        return clientOrderJpaRepository.countProductsSellingStatistics();
+    }
+
+    @Override
+    public List<MoneyByDateStatistics> countEarningsByDateStatistics() {
+        return clientOrderJpaRepository.countEarningsByDateStatisticsAndOrderByCompleteClientsOrderDateAsc();
     }
 }

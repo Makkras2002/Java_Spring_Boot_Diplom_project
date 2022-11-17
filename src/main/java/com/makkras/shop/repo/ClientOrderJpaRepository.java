@@ -1,6 +1,8 @@
 package com.makkras.shop.repo;
 
 import com.makkras.shop.entity.CompleteClientsOrder;
+import com.makkras.shop.repo.projection_interface.MoneyByDateStatistics;
+import com.makkras.shop.repo.projection_interface.ProductsSellingStatistics;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -20,6 +22,18 @@ public interface ClientOrderJpaRepository extends JpaRepository<CompleteClientsO
     List<CompleteClientsOrder> findAllByIsCompleted(boolean completionStatus);
     List<CompleteClientsOrder> findAllByOrderByCompleteClientsOrderDateDesc();
     List<CompleteClientsOrder> findAllByOrderByCompleteClientsOrderDateAsc();
+
+    @Query(value = """
+    SELECT product_name AS name,SUM(ordered_product_amount) AS amount FROM complete_clients_orders 
+    JOIN component_clients_orders ON complete_clients_orders.complete_clients_order_id = component_clients_orders.complete_clients_order_id
+    JOIN products ON component_clients_orders.product_id = products.product_id WHERE complete_clients_orders.is_completed = true GROUP BY product_name""",nativeQuery = true)
+    List<ProductsSellingStatistics> countProductsSellingStatistics();
+
+    @Query(value = """
+    SELECT complete_clients_order_date AS date,SUM(component_clients_orders.ordered_product_full_price) AS amount FROM complete_clients_orders 
+    JOIN component_clients_orders ON complete_clients_orders.complete_clients_order_id = component_clients_orders.complete_clients_order_id
+    WHERE complete_clients_orders.is_completed = true GROUP BY complete_clients_order_date ORDER BY complete_clients_order_date ASC""",nativeQuery = true)
+    List<MoneyByDateStatistics> countEarningsByDateStatisticsAndOrderByCompleteClientsOrderDateAsc();
 
     @Query(value = """
     SELECT DISTINCT * FROM complete_clients_orders 

@@ -1,7 +1,7 @@
 package com.makkras.shop.repo;
 
-import com.makkras.shop.entity.CompleteClientsOrder;
 import com.makkras.shop.entity.CompleteStockRefillOrder;
+import com.makkras.shop.repo.projection_interface.MoneyByDateStatistics;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -31,4 +31,10 @@ public interface StockRefillOrdersJpaRepository extends JpaRepository<CompleteSt
     AND supplier_companies.supplier_company_name LIKE ? AND complete_stock_refill_orders.complete_stock_refill_order_date BETWEEN ? AND ?""",nativeQuery = true)
     List<CompleteStockRefillOrder> findAllByUser_LoginLikeOrUser_EmailLikeAndSupplierCompanyNameLikeAndCompleteStockRefillOrderDateIsBetween
             (String login, String email, String supplierCompanyName, LocalDate startDate, LocalDate endDate);
+
+    @Query(value = """
+    SELECT complete_stock_refill_order_date AS date,SUM(component_stock_refill_orders.ordered_product_full_price) AS amount FROM complete_stock_refill_orders 
+    JOIN component_stock_refill_orders ON complete_stock_refill_orders.complete_stock_refill_order_id = component_stock_refill_orders.complete_stock_refill_order_id
+    WHERE complete_stock_refill_orders.is_completed = true GROUP BY complete_stock_refill_order_date ORDER BY complete_stock_refill_order_date ASC""",nativeQuery = true)
+    List<MoneyByDateStatistics> countExpensesOnStockRefillByDateStatisticsAndOrderByCompleteStockRefillOrderDateAsc();
 }

@@ -4,6 +4,8 @@ import com.makkras.shop.entity.CompleteClientsOrder;
 import com.makkras.shop.entity.ComponentClientsOrder;
 import com.makkras.shop.entity.User;
 import com.makkras.shop.exception.CustomServiceException;
+import com.makkras.shop.repo.projection_interface.MoneyByDateStatistics;
+import com.makkras.shop.repo.projection_interface.ProductsSellingStatistics;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -20,4 +22,6 @@ public interface ClientOrderService {
     List<CompleteClientsOrder> getAllClientsOrdersAndOrderByDateDesc();
     List<CompleteClientsOrder> getAllClientsOrdersAndOrderByDateAsc();
     List<CompleteClientsOrder> getAllFilteredClientsOrders(String loginOrEmail, String deliveryAddress, LocalDate startDate, LocalDate endDate);
+    List<ProductsSellingStatistics> countProductsSellingStatistics();
+    List<MoneyByDateStatistics> countEarningsByDateStatistics();
 }
