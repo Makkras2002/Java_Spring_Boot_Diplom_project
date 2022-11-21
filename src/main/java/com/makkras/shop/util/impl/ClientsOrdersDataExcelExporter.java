@@ -31,7 +31,7 @@ public class ClientsOrdersDataExcelExporter implements ExcelExporter {
 
     private void writeHeaderLine() {
         workbook = new XSSFWorkbook();
-        sheet = workbook.createSheet("UserOrders");
+        sheet = workbook.createSheet("ClientsOrders");
 
         Row row = sheet.createRow(0);
 
