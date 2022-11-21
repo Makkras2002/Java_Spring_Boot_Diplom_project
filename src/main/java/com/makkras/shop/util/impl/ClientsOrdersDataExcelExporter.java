@@ -48,7 +48,7 @@ public class ClientsOrdersDataExcelExporter implements ExcelExporter {
         createCell(row, 4, "Количество товара в заказе (ед.)", style);
         createCell(row, 5, "Полная цена за данный вид товара (BYN)", style);
         createCell(row, 6, "Дата совершения", style);
-        createCell(row, 7, "Адрес доставки", style);
+        createCell(row, 7, "Адрес доставки (BYN)", style);
         createCell(row, 8, "Цена доставки", style);
         createCell(row, 9, "Статус заказа", style);
 
