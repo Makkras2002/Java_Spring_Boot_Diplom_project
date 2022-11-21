@@ -54,6 +54,13 @@
         <button class="btn-warning" id="next" type="button" onclick="nextPage()">Далее</button>
     </div>
 </div>
+<div class="row mx-auto mt-5 justify-content-center">
+    <div class="col-4 w-auto">
+        <a class="btn btn-outline-primary" th:href="@{/clientsOrders/exportExcel}">
+            <i class="fa fa-file-excel-o"></i>| Экспортировать данные о заказах клиентов в эксель</a>
+    </div>
+</div>
+
 <div th:insert="modals/searchClOrdersModal.html" :: div/>
 <footer th:insert="fragments/footer.html" :: footer/>
 </body>

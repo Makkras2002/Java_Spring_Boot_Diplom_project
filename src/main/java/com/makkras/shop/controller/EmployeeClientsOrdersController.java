@@ -12,6 +12,8 @@ import com.makkras.shop.service.impl.CustomClientOrderService;
 import com.makkras.shop.service.impl.CustomCurrentFinancesService;
 import com.makkras.shop.service.impl.CustomMailService;
 import com.makkras.shop.service.impl.CustomProductService;
+import com.makkras.shop.util.ExcelExporter;
+import com.makkras.shop.util.impl.ClientsOrdersDataExcelExporter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +26,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -44,17 +50,20 @@ public class EmployeeClientsOrdersController {
     private final ProductService productService;
     private final CurrentFinancesService financesService;
     private final MailService mailService;
+    private final ExcelExporter excelExporter;
     private final Gson gson;
 
     @Autowired
     public EmployeeClientsOrdersController(CustomClientOrderService clientOrderService,
                                            CustomProductService productService,
                                            CustomCurrentFinancesService financesService,
-                                           CustomMailService mailService) {
+                                           CustomMailService mailService,
+                                           ClientsOrdersDataExcelExporter excelExporter) {
         this.clientOrderService = clientOrderService;
         this.productService = productService;
         this.financesService = financesService;
         this.mailService = mailService;
+        this.excelExporter = excelExporter;
         gson = new Gson();
     }
 
@@ -141,5 +150,21 @@ public class EmployeeClientsOrdersController {
         }
         model.addAttribute("clientsOrders",gson.toJson(filteredClientsOrders));
         return "clientsOrdersControlPage";
+    }
+
+    @GetMapping("/clientsOrders/exportExcel")
+    public void exportClOrdersData(HttpServletResponse response) {
+        try {
+            response.setContentType("application/octet-stream");
+            DateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy_HH-mm");
+            String currentDateTime = dateFormatter.format(new Date());
+
+            String headerKey = "Content-Disposition";
+            String headerValue = "attachment; filename=clientsOrders_" + currentDateTime + ".xlsx";
+            response.setHeader(headerKey, headerValue);
+            excelExporter.export(response,clientOrderService.getAllClientsOrdersAndOrderByDateDesc());
+        } catch (CustomServiceException e) {
+            logger.error(e.getMessage());
+        }
     }
 }
