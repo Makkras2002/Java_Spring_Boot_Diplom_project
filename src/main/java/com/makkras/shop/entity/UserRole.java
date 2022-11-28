@@ -3,7 +3,7 @@ package com.makkras.shop.entity;
 import javax.persistence.*;
 
 @Entity(name = "user_roles")
-public class UserRole extends CustomEntity{
+public class UserRole extends CustomEntity {
     @Id
     @Column(name = "role_id")
     private Long roleId;

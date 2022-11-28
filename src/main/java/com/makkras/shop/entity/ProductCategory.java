@@ -3,7 +3,7 @@ package com.makkras.shop.entity;
 import javax.persistence.*;
 
 @Entity(name = "product_categories")
-public class ProductCategory {
+public class ProductCategory extends CustomEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "category_id")
