@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity(name = "expenses")
-public class Expenses extends CustomEntity{
+public class Expenses extends CustomEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "expenses_id")
