@@ -49,7 +49,6 @@ public class EmployeeClientsOrdersController {
     private final ClientOrderService clientOrderService;
     private final ProductService productService;
     private final CurrentFinancesService financesService;
-    private final MailService mailService;
     private final ExcelExporter excelExporter;
     private final Gson gson;
 
@@ -57,12 +56,10 @@ public class EmployeeClientsOrdersController {
     public EmployeeClientsOrdersController(CustomClientOrderService clientOrderService,
                                            CustomProductService productService,
                                            CustomCurrentFinancesService financesService,
-                                           CustomMailService mailService,
                                            ClientsOrdersDataExcelExporter excelExporter) {
         this.clientOrderService = clientOrderService;
         this.productService = productService;
         this.financesService = financesService;
-        this.mailService = mailService;
         this.excelExporter = excelExporter;
         gson = new Gson();
     }
@@ -88,12 +85,6 @@ public class EmployeeClientsOrdersController {
                             componentOrder.getProduct());
                 }
                 financesService.updateCurrentFinances(totalSum);
-                try {
-                    mailService.sendSuccessfulClientOrderEmail(clientsOrder.getUser(), Optional.ofNullable(clientsOrder.getDeliveryAddress()));
-                } catch (MessagingException | UnsupportedEncodingException e) {
-                    logger.error(e.getMessage());
-                    redirectAttributes.addFlashAttribute("error", ORDER_COMPLETION_ERROR);
-                }
             } catch (CustomServiceException exception) {
                 logger.error(exception.getMessage());
                 redirectAttributes.addFlashAttribute("error", ORDER_COMPLETION_ERROR);

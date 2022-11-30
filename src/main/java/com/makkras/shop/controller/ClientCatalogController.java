@@ -7,6 +7,7 @@ import com.makkras.shop.entity.User;
 import com.makkras.shop.exception.CustomServiceException;
 import com.makkras.shop.security.SecurityUser;
 import com.makkras.shop.service.ClientOrderService;
+import com.makkras.shop.service.MailService;
 import com.makkras.shop.service.ProductService;
 import com.makkras.shop.service.UserService;
 import com.makkras.shop.service.impl.CustomClientOrderService;
@@ -26,8 +27,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -42,12 +45,14 @@ public class ClientCatalogController {
     private static final String EMPTY_ORDER_ERROR = "Ваш заказ пуст!";
     private static final String ORDER_ALTER_ERROR = "Возникла ошибка при изменении заказа!";
     private static final String ORDER_INVALID_PRODUCT_ERROR = "Ошибка при совершении заказа! Вы пытались заказать неверное количество или вид товара!";
+    private static final String ORDER_INVALID_ERROR = "Непредвиденная ошибка при совершении заказа!";
     public static final String UNKNOWN_USER_ERROR = "Неизвестный пользователь!";
     private static final String NO_DELIVERY_ADDRESS = "None";
     private static final Logger logger = LogManager.getLogger();
     private final ProductService productService;
     private final UserService userService;
     private final ClientOrderService clientOrderService;
+    private final MailService mailService;
     private final ProductFilterUtil productFilterUtil;
     private final ClientsOrderValidator clientsOrderValidator;
     private final Gson gson;
@@ -62,6 +67,7 @@ public class ClientCatalogController {
         this.productService = productService;
         this.userService = userService;
         this.clientOrderService = clientOrderService;
+        this.mailService = mailService;
         this.productFilterUtil = productFilterUtil;
         this.clientsOrderValidator =clientsOrderValidator;
         this.gson = new Gson();
@@ -212,6 +218,12 @@ public class ClientCatalogController {
                 BigDecimal deliveryPrice = deliveryAddress.isEmpty()?BigDecimal.ZERO: totalPrice.compareTo(BigDecimal.valueOf(30))>=0?BigDecimal.valueOf(5):BigDecimal.valueOf(10);
                 if(clientsOrderValidator.validateClientOrder(componentClientsOrdersList)) {
                     clientOrderService.addClientOrder(componentClientsOrdersList,user.get(),deliveryAddress.orElse(NO_DELIVERY_ADDRESS),deliveryPrice);
+                    try {
+                        mailService.sendSuccessfulClientOrderEmail(user.get(), deliveryAddress);
+                    } catch (MessagingException | UnsupportedEncodingException e) {
+                        logger.error(e.getMessage());
+                        redirectAttributes.addFlashAttribute("error", ORDER_INVALID_ERROR);
+                    }
                 } else {
                     redirectAttributes.addFlashAttribute("error",ORDER_INVALID_PRODUCT_ERROR);
                     session.removeAttribute(COMPONENT_ORDERS_LIST);
