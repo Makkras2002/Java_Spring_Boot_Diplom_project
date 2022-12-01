@@ -16,7 +16,7 @@ import java.util.Optional;
 public class CustomMailService implements MailService {
     private static final String COMPANY_EMAIL = "max2002shpak@gmail.com";
     private static final String COMPANY_NAME = "BestFood";
-    private static final String REGISTRATION_EMAIL_MESSAGE_SUBJECT = "Пожалйста подтвердите свою регистрацию";
+    private static final String REGISTRATION_EMAIL_MESSAGE_SUBJECT = "Пожалуйста подтвердите свою регистрацию";
     private static final String SUCCESSFUL_CLIENT_ORDER_EMAIL_MESSAGE_SUBJECT = "Успешно совершённый заказ";
     private static final String REGISTRATION_EMAIL_MESSAGE_CONTENT = """
             
