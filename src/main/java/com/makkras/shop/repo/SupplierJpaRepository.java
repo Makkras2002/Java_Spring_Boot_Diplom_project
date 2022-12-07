@@ -17,6 +17,8 @@ public interface SupplierJpaRepository extends JpaRepository<SupplierCompany, Lo
     List<SupplierCompany> findAllByOrderByIsActiveDesc();
     List<SupplierCompany> findAllByOrderByIsActiveAsc();
     List<SupplierCompany> findAllByIsActive(boolean isActive);
+    @Transactional
+    Long deleteBySupplierCompanyName(String name);
 
     @Modifying
     @Transactional

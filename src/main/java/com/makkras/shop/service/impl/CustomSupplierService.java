@@ -30,6 +30,16 @@ public class CustomSupplierService implements SupplierService {
     }
 
     @Override
+    public SupplierCompany addSupplierAndReturn(SupplierCompany supplierCompany) {
+        return supplierJpaRepository.save(supplierCompany);
+    }
+
+    @Override
+    public Long deleteSupplierCompanyByNameAndReturnDeletedId(String name) {
+        return supplierJpaRepository.deleteBySupplierCompanyName(name);
+    }
+
+    @Override
     public boolean updateSupplierData(SupplierCompany updatedSupplier) {
         Long supplierForUpdateId = updatedSupplier.getSupplierCompanyId();
         Optional<SupplierCompany> oldSupplierCompanyOptional = supplierJpaRepository.findById(supplierForUpdateId);
