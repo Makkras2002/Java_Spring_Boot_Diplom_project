@@ -1,5 +1,6 @@
 let productsNames = JSON.parse(document.getElementById("soldProductsNames").innerHTML);
 let productsStats = JSON.parse(document.getElementById("soldProductsStats").innerHTML);
+let productsBoughtStats = JSON.parse(document.getElementById("boughtProductsStats").innerHTML);
 let xValues = productsNames;
 let yValues = productsStats;
 
@@ -26,6 +27,39 @@ new Chart("myChart", {
                 precision: 2
             }
         },
+    }
+});
+let barsData = {
+    labels: productsNames,
+    datasets: [
+        {
+            label: "Продано",
+            backgroundColor: "green",
+            data: productsStats
+        },
+        {
+            label: "Закуплено",
+            backgroundColor: "red",
+            data: productsBoughtStats
+        }
+    ]
+};
+new Chart("myBarsChart", {
+    type: "bar",
+    data: barsData,
+    options: {
+        barValueSpacing: 20,
+        scales: {
+            yAxes: [{
+                ticks: {
+                    min: 0,
+                }
+            }]
+        },
+        title: {
+            display: true,
+            text: "Диаграмма соотношения закупленного и проданного количества товаров"
+        }
     }
 });
 function getRandomColor() {

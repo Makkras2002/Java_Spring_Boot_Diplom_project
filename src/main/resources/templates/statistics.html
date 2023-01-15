@@ -9,21 +9,51 @@
 <header th:insert="fragments/header.html :: header"/>
 <div th:insert="sidebars/employeeSidebar.html" :: div/>
 <br/>
+
 <div id="soldProductsNames" style="display: none" th:text="${soldProductsNames}"></div>
 <div id="soldProductsStats" style="display: none" th:text="${soldProductsStats}"></div>
+<div id="boughtProductsStats" style="display: none" th:text="${boughtProductsStats}"></div>
 <div id="dates" style="display: none" th:text="${dates}"></div>
 <div id="earnedMoneyAmount" style="display: none" th:text="${earnedMoneyAmount}"></div>
 <div id="dates2" style="display: none" th:text="${dates2}"></div>
 <div id="spentMoneyAmount" style="display: none" th:text="${spentMoneyAmount}"></div>
-<div class="row mx-auto w-75 border-top border-secondary">
-    <canvas id="myChart"></canvas>
+<div class="row justify-content-center mt-5 border-bottom border-dark border-2">
+    <div class="col-4 text-center">
+        <p style="color: darkorange; font-weight: bolder">Выберите период времени для отображения статистики:</p>
+        <form method="post" id="periodForm" th:action="@{/statistics}">
+            <label for="startDate" class="form-label" style="color: darkorange; font-weight: bolder">Введите крайнюю раннюю дату</label>
+            <input type="date" class="form-control" id="startDate" name="startDate" th:value="${startDate}"/>
+            <label for="endDate" class="form-label" style="color: darkorange; font-weight: bolder">Введите крайнюю позднюю дату</label>
+            <input type="date" class="form-control" id="endDate" name="endDate" th:value="${endDate}"/>
+            <button type="submit" class="btn btn-outline-success mt-2 mb-2">Установить период для отображения статистики</button>
+        </form>
+    </div>
 </div>
-<div class="row mx-auto w-50 mt-5 border-top border-secondary">
-    <canvas id="myChartLine"></canvas>
+<div class="row justify-content-center mt-5">
+    <div class="col-4 text-center">
+        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#pieChartProductStatsModal">
+            Отобразить статистику продаж продуктов
+        </button>
+    </div>
 </div>
-<div class="row mx-auto w-50 mt-5 border-top border-secondary">
-    <canvas id="myChartLine2"></canvas>
+<div class="row justify-content-center mt-5 ">
+    <div class="col-4 text-center">
+        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#barsDiagProductStatsModal">
+            Отобразить диаграмму соотношения закупленного и проданного количества товаров
+        </button>
+    </div>
 </div>
+<div class="row justify-content-center mt-5">
+    <div class="col-4 text-center">
+        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#lineChartsIncomeStatsModal">
+            Отобразить финансовую статистику заработка и затрат
+        </button>
+    </div>
+</div>
+
+<div th:insert="modals/pieChartProductStatsModal.html" :: div/>
+<div th:insert="modals/barsDiagProductStatsModal.html" :: div/>
+<div th:insert="modals/lineChartsIncomeStatsModal.html" :: div/>
 <footer th:insert="fragments/footer.html" :: footer/>
 </body>
 <script type="text/javascript" th:src="@{/js/statistics_page_handler.js}"></script>

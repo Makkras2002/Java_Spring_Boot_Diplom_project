@@ -4,6 +4,7 @@ import com.makkras.shop.entity.*;
 import com.makkras.shop.exception.CustomServiceException;
 import com.makkras.shop.repo.StockRefillOrdersJpaRepository;
 import com.makkras.shop.repo.projection_interface.MoneyByDateStatistics;
+import com.makkras.shop.repo.projection_interface.ProductsSellingStatistics;
 import com.makkras.shop.service.StockRefillOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -65,5 +66,10 @@ public class CustomStockRefillOrderService implements StockRefillOrderService {
     @Override
     public List<MoneyByDateStatistics> countExpensesOnStockRefillByDateStatistics() {
         return stockRefillOrdersJpaRepository.countExpensesOnStockRefillByDateStatisticsAndOrderByCompleteStockRefillOrderDateAsc();
+    }
+
+    @Override
+    public List<ProductsSellingStatistics> countProductsStockRefillSellingStatistics() {
+        return stockRefillOrdersJpaRepository.countProductsStockRefillSellingStatistics();
     }
 }

@@ -1,0 +1,18 @@
+<div class="modal fade" id="barsDiagProductStatsModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="barsDiagProductStatsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="barsDiagProductStatsModalLabel" th:text="'Диаграмма соотношения закупленного и проданного количества товаров (С '+${startDate}+' по '+${endDate}+')'"></h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row mx-auto w-75 border-top border-secondary">
+                    <canvas id="myBarsChart"></canvas>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

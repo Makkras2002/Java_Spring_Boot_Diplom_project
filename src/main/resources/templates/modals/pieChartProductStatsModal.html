@@ -1,0 +1,19 @@
+<div class="modal fade" id="pieChartProductStatsModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="pieChartProductStatsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="pieChartProductStatsModalLabel" th:text="'Статистика продаж продуктов (С '+${startDate}+' по '+${endDate}+')'"></h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <canvas id="myChart"></canvas>
+                <div class="row mx-auto w-75 border-top border-secondary">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

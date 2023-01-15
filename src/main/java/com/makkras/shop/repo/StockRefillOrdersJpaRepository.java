@@ -2,6 +2,7 @@ package com.makkras.shop.repo;
 
 import com.makkras.shop.entity.CompleteStockRefillOrder;
 import com.makkras.shop.repo.projection_interface.MoneyByDateStatistics;
+import com.makkras.shop.repo.projection_interface.ProductsSellingStatistics;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -22,6 +23,13 @@ public interface StockRefillOrdersJpaRepository extends JpaRepository<CompleteSt
     @Transactional
     @Query(value = "UPDATE complete_stock_refill_orders SET is_completed=? WHERE complete_stock_refill_order_id=?",nativeQuery = true)
     void updateStockRefillOrderStatus(boolean newStatus, Long orderId);
+
+
+    @Query(value = """
+    SELECT product_name AS name,SUM(ordered_product_amount) AS amount FROM complete_stock_refill_orders 
+    JOIN component_stock_refill_orders ON complete_stock_refill_orders.complete_stock_refill_order_id = component_stock_refill_orders.complete_stock_refill_order_id
+    JOIN products ON component_stock_refill_orders.product_id = products.product_id WHERE complete_stock_refill_orders.is_completed = true GROUP BY product_name""",nativeQuery = true)
+    List<ProductsSellingStatistics> countProductsStockRefillSellingStatistics();
 
     @Query(value = """
     SELECT DISTINCT * FROM complete_stock_refill_orders

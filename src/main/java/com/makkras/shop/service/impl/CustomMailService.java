@@ -74,7 +74,7 @@ public class CustomMailService implements MailService {
 
         content = content.replace("[[name]]", user.getLogin());
 
-        content = content.replace("[[DELIVERY]]", deliveryAddress.orElse("Самовывоз из магазина."));
+        content = content.replace("[[DELIVERY]]", deliveryAddress.orElse("Самовывоз из магазина"));
 
         helper.setText(content, true);
 
