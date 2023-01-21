@@ -26,14 +26,14 @@ public interface ClientOrderJpaRepository extends JpaRepository<CompleteClientsO
     @Query(value = """
     SELECT product_name AS name,SUM(ordered_product_amount) AS amount FROM complete_clients_orders 
     JOIN component_clients_orders ON complete_clients_orders.complete_clients_order_id = component_clients_orders.complete_clients_order_id
-    JOIN products ON component_clients_orders.product_id = products.product_id WHERE complete_clients_orders.is_completed = true GROUP BY product_name""",nativeQuery = true)
-    List<ProductsSellingStatistics> countProductsSellingStatistics();
+    JOIN products ON component_clients_orders.product_id = products.product_id WHERE complete_clients_orders.is_completed = true AND complete_clients_orders.complete_clients_order_date BETWEEN ? AND ? GROUP BY product_name""",nativeQuery = true)
+    List<ProductsSellingStatistics> countProductsSellingStatistics(LocalDate startDate, LocalDate endDate);
 
     @Query(value = """
     SELECT complete_clients_order_date AS date,SUM(component_clients_orders.ordered_product_full_price) AS amount FROM complete_clients_orders 
     JOIN component_clients_orders ON complete_clients_orders.complete_clients_order_id = component_clients_orders.complete_clients_order_id
-    WHERE complete_clients_orders.is_completed = true GROUP BY complete_clients_order_date ORDER BY complete_clients_order_date ASC""",nativeQuery = true)
-    List<MoneyByDateStatistics> countEarningsByDateStatisticsAndOrderByCompleteClientsOrderDateAsc();
+    WHERE complete_clients_orders.is_completed = true AND complete_clients_orders.complete_clients_order_date BETWEEN ? AND ? GROUP BY complete_clients_order_date ORDER BY complete_clients_order_date ASC""",nativeQuery = true)
+    List<MoneyByDateStatistics> countEarningsByDateStatisticsAndOrderByCompleteClientsOrderDateAsc(LocalDate startDate, LocalDate endDate);
 
     @Query(value = """
     SELECT DISTINCT * FROM complete_clients_orders 

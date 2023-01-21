@@ -59,7 +59,15 @@ new Chart("myBarsChart", {
         title: {
             display: true,
             text: "Диаграмма соотношения закупленного и проданного количества товаров"
-        }
+        },
+        plugins: {
+            labels: {
+                render: 'percentage',
+                fontWeight: 0,
+                fontColor: 'white',
+                precision: 0
+            }
+        },
     }
 });
 function getRandomColor() {

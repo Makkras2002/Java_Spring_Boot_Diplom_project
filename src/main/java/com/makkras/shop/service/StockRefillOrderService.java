@@ -18,6 +18,6 @@ public interface StockRefillOrderService {
     List<CompleteStockRefillOrder> getAllStockRefillOrdersAndOrderByDateDesc();
     List<CompleteStockRefillOrder> getAllStockRefillOrdersAndOrderByDateAsc();
     List<CompleteStockRefillOrder> getAllFilteredStockRefillOrders(String loginOrEmail, String supplierCompanyName, LocalDate startDate, LocalDate endDate);
-    List<MoneyByDateStatistics> countExpensesOnStockRefillByDateStatistics();
-    List<ProductsSellingStatistics> countProductsStockRefillSellingStatistics();
+    List<MoneyByDateStatistics> countExpensesOnStockRefillByDateStatistics(LocalDate startDate, LocalDate endDate);
+    List<ProductsSellingStatistics> countProductsStockRefillSellingStatistics(LocalDate startDate, LocalDate endDate);
 }

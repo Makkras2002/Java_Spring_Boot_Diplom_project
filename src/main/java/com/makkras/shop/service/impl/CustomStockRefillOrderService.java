@@ -64,12 +64,12 @@ public class CustomStockRefillOrderService implements StockRefillOrderService {
     }
 
     @Override
-    public List<MoneyByDateStatistics> countExpensesOnStockRefillByDateStatistics() {
-        return stockRefillOrdersJpaRepository.countExpensesOnStockRefillByDateStatisticsAndOrderByCompleteStockRefillOrderDateAsc();
+    public List<MoneyByDateStatistics> countExpensesOnStockRefillByDateStatistics(LocalDate startDate, LocalDate endDate) {
+        return stockRefillOrdersJpaRepository.countExpensesOnStockRefillByDateStatisticsAndOrderByCompleteStockRefillOrderDateAsc(startDate, endDate);
     }
 
     @Override
-    public List<ProductsSellingStatistics> countProductsStockRefillSellingStatistics() {
-        return stockRefillOrdersJpaRepository.countProductsStockRefillSellingStatistics();
+    public List<ProductsSellingStatistics> countProductsStockRefillSellingStatistics(LocalDate startDate, LocalDate endDate) {
+        return stockRefillOrdersJpaRepository.countProductsStockRefillSellingStatistics(startDate,endDate);
     }
 }

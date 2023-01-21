@@ -28,8 +28,8 @@ public interface StockRefillOrdersJpaRepository extends JpaRepository<CompleteSt
     @Query(value = """
     SELECT product_name AS name,SUM(ordered_product_amount) AS amount FROM complete_stock_refill_orders 
     JOIN component_stock_refill_orders ON complete_stock_refill_orders.complete_stock_refill_order_id = component_stock_refill_orders.complete_stock_refill_order_id
-    JOIN products ON component_stock_refill_orders.product_id = products.product_id WHERE complete_stock_refill_orders.is_completed = true GROUP BY product_name""",nativeQuery = true)
-    List<ProductsSellingStatistics> countProductsStockRefillSellingStatistics();
+    JOIN products ON component_stock_refill_orders.product_id = products.product_id WHERE complete_stock_refill_orders.is_completed = true AND complete_stock_refill_orders.complete_stock_refill_order_date BETWEEN ? AND ? GROUP BY product_name""",nativeQuery = true)
+    List<ProductsSellingStatistics> countProductsStockRefillSellingStatistics(LocalDate startDate, LocalDate endDate);
 
     @Query(value = """
     SELECT DISTINCT * FROM complete_stock_refill_orders
@@ -43,6 +43,6 @@ public interface StockRefillOrdersJpaRepository extends JpaRepository<CompleteSt
     @Query(value = """
     SELECT complete_stock_refill_order_date AS date,SUM(component_stock_refill_orders.ordered_product_full_price) AS amount FROM complete_stock_refill_orders 
     JOIN component_stock_refill_orders ON complete_stock_refill_orders.complete_stock_refill_order_id = component_stock_refill_orders.complete_stock_refill_order_id
-    WHERE complete_stock_refill_orders.is_completed = true GROUP BY complete_stock_refill_order_date ORDER BY complete_stock_refill_order_date ASC""",nativeQuery = true)
-    List<MoneyByDateStatistics> countExpensesOnStockRefillByDateStatisticsAndOrderByCompleteStockRefillOrderDateAsc();
+    WHERE complete_stock_refill_orders.is_completed = true AND complete_stock_refill_orders.complete_stock_refill_order_date BETWEEN ? AND ? GROUP BY complete_stock_refill_order_date ORDER BY complete_stock_refill_order_date ASC""",nativeQuery = true)
+    List<MoneyByDateStatistics> countExpensesOnStockRefillByDateStatisticsAndOrderByCompleteStockRefillOrderDateAsc(LocalDate startDate, LocalDate endDate);
 }

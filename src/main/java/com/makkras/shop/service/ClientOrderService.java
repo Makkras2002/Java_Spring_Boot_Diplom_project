@@ -22,6 +22,6 @@ public interface ClientOrderService {
     List<CompleteClientsOrder> getAllClientsOrdersAndOrderByDateDesc();
     List<CompleteClientsOrder> getAllClientsOrdersAndOrderByDateAsc();
     List<CompleteClientsOrder> getAllFilteredClientsOrders(String loginOrEmail, String deliveryAddress, LocalDate startDate, LocalDate endDate);
-    List<ProductsSellingStatistics> countProductsSellingStatistics();
-    List<MoneyByDateStatistics> countEarningsByDateStatistics();
+    List<ProductsSellingStatistics> countProductsSellingStatistics(LocalDate startDate, LocalDate endDate);
+    List<MoneyByDateStatistics> countEarningsByDateStatistics(LocalDate startDate, LocalDate endDate);
 }

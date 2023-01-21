@@ -74,12 +74,12 @@ public class CustomClientOrderService implements ClientOrderService {
     }
 
     @Override
-    public List<ProductsSellingStatistics> countProductsSellingStatistics() {
-        return clientOrderJpaRepository.countProductsSellingStatistics();
+    public List<ProductsSellingStatistics> countProductsSellingStatistics(LocalDate startDate, LocalDate endDate) {
+        return clientOrderJpaRepository.countProductsSellingStatistics(startDate,endDate);
     }
 
     @Override
-    public List<MoneyByDateStatistics> countEarningsByDateStatistics() {
-        return clientOrderJpaRepository.countEarningsByDateStatisticsAndOrderByCompleteClientsOrderDateAsc();
+    public List<MoneyByDateStatistics> countEarningsByDateStatistics(LocalDate startDate, LocalDate endDate) {
+        return clientOrderJpaRepository.countEarningsByDateStatisticsAndOrderByCompleteClientsOrderDateAsc(startDate, endDate);
     }
 }
