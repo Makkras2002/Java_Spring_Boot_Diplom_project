@@ -18,19 +18,25 @@ public class CustomMailService implements MailService {
     private static final String COMPANY_NAME = "BestFood";
     private static final String REGISTRATION_EMAIL_MESSAGE_SUBJECT = "Пожалуйста подтвердите свою регистрацию";
     private static final String SUCCESSFUL_CLIENT_ORDER_EMAIL_MESSAGE_SUBJECT = "Успешно совершённый заказ";
+    private static final String PASSWORD_RESTORE_EMAIL_MESSAGE_SUBJECT = "Восстановление забытого пароля";
     private static final String REGISTRATION_EMAIL_MESSAGE_CONTENT = """
-            
+                        
             Дорогой [[name]],<br>
             Пожалуйста пройдите по ссылке, чтобы подтвердить Вашу регистрацию:<br>
             <h3><a href=\"[[URL]]\"  target=\\"_self\\">VERIFY</a></h3>
             Мы Вам благодарны,<br>
             ООО \"BestFood\".""";
     private static final String SUCCESSFUL_CLIENT_ORDER_EMAIL_MESSAGE_CONTENT = """
-            
+                        
             Дорогой [[name]],<br>
             Вы успешно осуществили заказ продуктов в магазине BestFood!<br>
             Ваш адрес доставки - [[DELIVERY]].<br>
             Мы Вам благодарны,<br>
+            ООО \"BestFood\".""";
+    private static final String PASSWORD_RESTORE_MESSAGE_CONTENT = """
+                        
+            Дорогой [[name]],<br>
+            Ваш специальный код для восстановления забытого пароля - [[CODE]].<br>
             ООО \"BestFood\".""";
     private final JavaMailSender mailSender;
 
@@ -75,6 +81,26 @@ public class CustomMailService implements MailService {
         content = content.replace("[[name]]", user.getLogin());
 
         content = content.replace("[[DELIVERY]]", deliveryAddress.orElse("Самовывоз из магазина"));
+
+        helper.setText(content, true);
+
+        mailSender.send(message);
+    }
+
+    @Override
+    public void sendPasswordRestoreCode(User user, Integer code) throws MessagingException, UnsupportedEncodingException {
+        String content = PASSWORD_RESTORE_MESSAGE_CONTENT;
+
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message);
+
+        helper.setFrom(COMPANY_EMAIL, COMPANY_NAME);
+        helper.setTo(user.getEmail());
+        helper.setSubject(PASSWORD_RESTORE_EMAIL_MESSAGE_SUBJECT);
+
+        content = content.replace("[[name]]", user.getLogin());
+
+        content = content.replace("[[CODE]]", code.toString());
 
         helper.setText(content, true);
 

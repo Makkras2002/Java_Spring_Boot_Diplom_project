@@ -15,6 +15,7 @@ public interface UserService {
     void updateUserEmail(String newEmail,String oldEmail, String login) throws CustomServiceException;
     void updateUserPassword(String newPassword, String login) throws CustomServiceException;
     Optional<User> findActiveUserByLogin(String login);
+    Optional<User> findActiveUserByEmail(String email);
     List<User> getAllUsers();
     boolean updateUserActivityStatus(Long userId);
     boolean updateUserAuthority(Long userId);

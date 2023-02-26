@@ -67,6 +67,11 @@ public class CustomUserService implements UserService {
     }
 
     @Override
+    public Optional<User> findActiveUserByEmail(String email) {
+        return userJpaRepository.findByEmailAndIsActive(email, true);
+    }
+
+    @Override
     public List<User> getAllUsers() {
         return userJpaRepository.findAll();
     }
