@@ -14,6 +14,7 @@ public interface UserService {
     boolean checkIfUserWithSuchEmailIsAlreadyPresent(String email);
     void updateUserEmail(String newEmail,String oldEmail, String login) throws CustomServiceException;
     void updateUserPassword(String newPassword, String login) throws CustomServiceException;
+    void updateUserPasswordByUserEmail(String newPassword, String email) throws CustomServiceException;
     Optional<User> findActiveUserByLogin(String login);
     Optional<User> findActiveUserByEmail(String email);
     List<User> getAllUsers();

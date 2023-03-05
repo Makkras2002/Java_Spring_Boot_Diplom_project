@@ -17,3 +17,22 @@ $('#sendCodeToEmailForm').submit(function(event) {
     });
 
 });
+$('#restorePasswordForm').submit(function(event) {
+    event.preventDefault();
+    $.ajax({
+        url: $(this).attr('action'),
+        type: 'post',
+        dataType: "text",
+        cache: "false",
+        async: true,
+        data:$('#restorePasswordForm').serialize(),
+        success: function() {
+            alert("Ваш пароль был успешно восстановлен!");
+            $('#forgotPasswordModal').modal('hide');
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            alert("Произошла ошибка во время восстановления пароля! Проверьте введённые данные!");
+        },
+    });
+
+});

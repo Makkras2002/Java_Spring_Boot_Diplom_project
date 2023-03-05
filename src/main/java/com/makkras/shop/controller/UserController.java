@@ -36,7 +36,6 @@ import java.security.SecureRandom;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 @Controller
@@ -52,6 +51,7 @@ public class UserController {
     private static final String ONLY_INACTIVE_USERS = "onlyInactiveUsers";
     private static final String NONE_USERS_FOUND_SEARCH_ERROR = "Пользователи, соответствующие параметрам поиска, не были найдены!";
     private static final String PASSWORD_RESTORE_CODE = "code";
+    private static final String USER_EMAIL_TO_RESTORE_PASSWORD = "restorePasswordEmail";
     private static Logger logger = LogManager.getLogger();
     private final UserService userService;
     private final UserDataValidator userDataValidator;
@@ -79,9 +79,9 @@ public class UserController {
     }
 
 
-    @GetMapping(value = "/sendCodeToEmail", produces = "application/json")
+    @GetMapping(value = "/sendCodeToEmail")
     @ResponseBody()
-    public ResponseEntity<String> sendPasswordRestoreCodeToEmail(Model model,
+    public ResponseEntity<HttpStatus> sendPasswordRestoreCodeToEmail(Model model,
                                                                  @RequestParam String email,
                                                                  HttpServletRequest request) {
         Optional<User> optionalUser = userService.findActiveUserByEmail(email);
@@ -94,6 +94,7 @@ public class UserController {
                 Integer code = sr.nextInt(900000) + 100000;
                 HttpSession currentSession = request.getSession();
                 currentSession.setAttribute(PASSWORD_RESTORE_CODE,code);
+                currentSession.setAttribute(USER_EMAIL_TO_RESTORE_PASSWORD,email);
                 mailService.sendPasswordRestoreCode(user, code);
             } catch (NoSuchAlgorithmException | MessagingException | UnsupportedEncodingException e) {
                 logger.error(e.getMessage());
@@ -101,6 +102,33 @@ public class UserController {
             }
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
+    }
+
+    @PostMapping("/restorePassword")
+    @ResponseBody()
+    public ResponseEntity<HttpStatus> restorePassword(Model model, @RequestParam String newPassword,
+                                 @RequestParam String newPasswordRepeated,@RequestParam Integer code,
+                                  HttpServletRequest request) {
+        HttpSession currentSession = request.getSession();
+        String encodedNewPassword = passwordEncoder.encode(newPassword);
+        if (newPassword.equals(newPasswordRepeated) &&
+                userDataValidator.validateUserChangePasswordData(newPassword) &&
+                currentSession.getAttribute(USER_EMAIL_TO_RESTORE_PASSWORD) != null &&
+                currentSession.getAttribute(PASSWORD_RESTORE_CODE) != null &&
+                currentSession.getAttribute(PASSWORD_RESTORE_CODE).equals(code)) {
+            try {
+                userService.updateUserPasswordByUserEmail(encodedNewPassword,
+                        currentSession.getAttribute(USER_EMAIL_TO_RESTORE_PASSWORD).toString());
+                currentSession.removeAttribute(USER_EMAIL_TO_RESTORE_PASSWORD);
+                currentSession.removeAttribute(PASSWORD_RESTORE_CODE);
+            } catch (CustomServiceException e) {
+                logger.error(e.getMessage());
+                return new ResponseEntity<>(HttpStatus.CONFLICT);
+            }
+        } else {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/register")

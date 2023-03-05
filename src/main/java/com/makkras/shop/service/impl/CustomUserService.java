@@ -62,6 +62,13 @@ public class CustomUserService implements UserService {
     }
 
     @Override
+    public void updateUserPasswordByUserEmail(String newPassword, String email) throws CustomServiceException {
+        if (userJpaRepository.updateUserPasswordByUserEmail(newPassword, email) != 1) {
+            throw new CustomServiceException("Error occurred during password update!");
+        }
+    }
+
+    @Override
     public Optional<User> findActiveUserByLogin(String login) {
         return userJpaRepository.findByLoginAndIsActive(login, true);
     }

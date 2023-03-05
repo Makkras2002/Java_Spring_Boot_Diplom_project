@@ -50,6 +50,11 @@ public interface UserJpaRepository extends JpaRepository<User,Long> {
 
     @Modifying
     @Transactional
+    @Query(value = "UPDATE Users SET password=? WHERE email = ?",nativeQuery = true)
+    int updateUserPasswordByUserEmail(String newPassword, String email);
+
+    @Modifying
+    @Transactional
     @Query(value = "UPDATE Users SET is_active=? WHERE user_id = ?",nativeQuery = true)
     void updateUserActivityStatus(boolean activityStatus, Long id);
 
